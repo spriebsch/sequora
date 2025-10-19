@@ -15,6 +15,7 @@ spl_autoload_register(
                 'spriebsch\\sequora\\eventwriter' => '/EventWriter.php',
                 'spriebsch\\sequora\\failedtostoreeventexception' => '/database/FailedToStoreEventException.php',
                 'spriebsch\\sequora\\failedtostoreeventforunknownreasonexception' => '/database/FailedToStoreEventForUnknownReasonException.php',
+                'spriebsch\\sequora\\generatetopicmap' => '/GenerateTopicMap.php',
                 'spriebsch\\sequora\\noeventsexception' => '/events/NoEventsException.php',
                 'spriebsch\\sequora\\sequoraexception' => '/SequoraException.php',
                 'spriebsch\\sequora\\sequorawriter' => '/SequoraWriter.php',
