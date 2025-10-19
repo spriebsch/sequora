@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fdc29ba980a4cb961a1624f1e0eab8f",
+    "content-hash": "854eb225fd75c7a88cfce038fc3b2274",
     "packages": [
         {
             "name": "crell/attributeutils",
@@ -303,6 +303,49 @@
                 "source": "https://github.com/spriebsch/filesystem/tree/1.0.7"
             },
             "time": "2025-04-10T17:27:39+00:00"
+        },
+        {
+            "name": "spriebsch/sqlite",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/sqlite.git",
+                "reference": "e46d70767783b42c613b6bfea3f308759cee5259"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/e46d70767783b42c613b6bfea3f308759cee5259",
+                "reference": "e46d70767783b42c613b6bfea3f308759cee5259",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
+            "support": {
+                "issues": "https://github.com/spriebsch/sqlite/issues",
+                "source": "https://github.com/spriebsch/sqlite/tree/2.0.0"
+            },
+            "time": "2025-04-29T14:58:44+00:00"
         },
         {
             "name": "spriebsch/timestamp",

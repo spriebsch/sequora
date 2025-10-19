@@ -4,7 +4,8 @@
   "type": "project",
   "require": {
     "php": ">=8.4",
-    "spriebsch/domain-event": "*"
+    "spriebsch/domain-event": "*",
+    "spriebsch/sqlite": "*"
   },
   "autoload": {
     "classmap": [

@@ -1,25 +1,16 @@
 <?php declare(strict_types=1);
 
-/*
- * This file is part of EventStore.
- *
- * (c) Stefan Priebsch <stefan@priebsch.de>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace spriebsch\eventstore;
+namespace spriebsch\sequora;
 
 use spriebsch\sqlite\Connection;
 use spriebsch\sqlite\SqliteSchema;
 
-final class SqliteEventStoreSchema extends SqliteSchema
+final class SqliteSequoraSchema extends SqliteSchema
 {
     protected function schemaExists(Connection $connection): bool
     {
         $result = $connection->query(
-            "SELECT sql FROM sqlite_master WHERE name='events';"
+            "SELECT sql FROM sqlite_master WHERE name='sequora-events';"
         );
 
         $row = $result->fetchArray(SQLITE3_ASSOC);
@@ -39,7 +30,7 @@ final class SqliteEventStoreSchema extends SqliteSchema
 
     private function sql(): string
     {
-        return 'BEGIN TRANSACTION; CREATE TABLE `events` (
+        return 'BEGIN TRANSACTION; CREATE TABLE `sequora-events` (
             `id` INTEGER PRIMARY KEY AUTOINCREMENT,
             `eventId` TEXT UNIQUE,
             `correlationId` TEXT,

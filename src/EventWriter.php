@@ -1,8 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace spriebsch\eventstore;
+namespace spriebsch\sequora;
+
+use spriebsch\DomainEvent\DomainEvent;
 
 interface EventWriter
 {
-    public function store(Events $events): void;
+    public function store(DomainEvent ...$events): void;
 }
