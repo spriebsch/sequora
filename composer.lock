@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "854eb225fd75c7a88cfce038fc3b2274",
+    "content-hash": "c611bf47537b11af71fd73831785917c",
     "packages": [
         {
             "name": "crell/attributeutils",
@@ -218,16 +218,16 @@
         },
         {
             "name": "spriebsch/domain-event",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/domain-event.git",
-                "reference": "8cc7da7f1e7dc761d98b7f1124335965b4672914"
+                "reference": "f4cf0a1a0c6833bbb7b68291ae59bdeb9dda71fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/8cc7da7f1e7dc761d98b7f1124335965b4672914",
-                "reference": "8cc7da7f1e7dc761d98b7f1124335965b4672914",
+                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/f4cf0a1a0c6833bbb7b68291ae59bdeb9dda71fb",
+                "reference": "f4cf0a1a0c6833bbb7b68291ae59bdeb9dda71fb",
                 "shasum": ""
             },
             "require": {
@@ -257,9 +257,9 @@
             "description": "The best way to work with Domain Events",
             "support": {
                 "issues": "https://github.com/spriebsch/domain-event/issues",
-                "source": "https://github.com/spriebsch/domain-event/tree/1.0.0"
+                "source": "https://github.com/spriebsch/domain-event/tree/1.1.0"
             },
-            "time": "2025-10-17T07:40:22+00:00"
+            "time": "2025-10-19T22:00:46+00:00"
         },
         {
             "name": "spriebsch/filesystem",
@@ -438,7 +438,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.4"
+        "php": ">=8.4",
+        "ext-sqlite3": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"

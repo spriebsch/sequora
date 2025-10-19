@@ -5,6 +5,7 @@ namespace spriebsch\sequora;
 use spriebsch\DomainEvent\Envelope;
 use spriebsch\DomainEvent\JsonDomainEventSerializer;
 use spriebsch\sqlite\Connection;
+use spriebsch\timestamp\Timestamp;
 use SQLite3Stmt;
 use Throwable;
 use const SQLITE3_NULL;
@@ -19,7 +20,7 @@ final class SqliteDatabaseWriter implements DatabaseWriter
         return new self($connection);
     }
 
-    public function __construct(
+    private function __construct(
         private readonly Connection $connection
     ) {}
 
@@ -33,49 +34,34 @@ final class SqliteDatabaseWriter implements DatabaseWriter
         try {
             $statement = $this->prepareStatement();
 
-            $eventId = $envelope->eventId()->asString();
-            $schemaVersion = $envelope->schemaVersion()->asInt();
-            $correlationId = $envelope->correlationId();
-            $causationId = $envelope->causationId();
-            $receivedAt = $envelope->receivedAt()->asString();
-            $persistedAt = null; // Not set at write time
-            $topic = $envelope->topic();
-            $topicVendor = $topic->vendor();
-            $topicDomain = $topic->domain();
-            $topicContext = $topic->context();
-            $topicName = $topic->name();
-            $topicString = $topic->asString();
-            $json = (new JsonDomainEventSerializer())->serialize($envelope->payload()->event());
+            $statement->bindValue(':eventId', $envelope->eventId()->asString(), SQLITE3_TEXT);
+            $statement->bindValue(':schemaVersion', $envelope->schemaVersion()->asInt(), SQLITE3_INTEGER);
 
-            $statement->bindValue(':eventId', $eventId, SQLITE3_TEXT);
-            $statement->bindValue(':schemaVersion', $schemaVersion, SQLITE3_TEXT);
-
-            if ($correlationId === null) {
+            if ($envelope->correlationId() === null) {
                 $statement->bindValue(':correlationId', null, SQLITE3_NULL);
             } else {
-                $statement->bindValue(':correlationId', $correlationId->asUUID()->asString(), SQLITE3_TEXT);
+                $statement->bindValue(':correlationId', $envelope->correlationId()->asString(), SQLITE3_TEXT);
             }
 
-            if ($causationId === null) {
+            if ($envelope->causationId() === null) {
                 $statement->bindValue(':causationId', null, SQLITE3_NULL);
             } else {
-                $statement->bindValue(':causationId', $causationId->asUUID()->asString(), SQLITE3_TEXT);
+                $statement->bindValue(':causationId', $envelope->causationId()->asString(), SQLITE3_TEXT);
             }
 
-            $statement->bindValue(':receivedAt', $receivedAt, SQLITE3_TEXT);
-            $statement->bindValue(':persistedAt', $persistedAt, SQLITE3_NULL);
-            $statement->bindValue(':topicVendor', $topicVendor, SQLITE3_TEXT);
-            $statement->bindValue(':topicDomain', $topicDomain, SQLITE3_TEXT);
-            $statement->bindValue(':topicContext', $topicContext, SQLITE3_TEXT);
-            $statement->bindValue(':topicName', $topicName, SQLITE3_TEXT);
-            $statement->bindValue(':topic', $topicString, SQLITE3_TEXT);
-            $statement->bindValue(':event', $json, SQLITE3_TEXT);
+            $statement->bindValue(':receivedAt', $envelope->receivedAt()->asString(), SQLITE3_TEXT);
+            $statement->bindValue(':persistedAt', Timestamp::generate()->asString(), SQLITE3_TEXT);
+            $statement->bindValue(':topicVendor', $envelope->topic()->vendor(), SQLITE3_TEXT);
+            $statement->bindValue(':topicDomain', $envelope->topic()->domain(), SQLITE3_TEXT);
+            $statement->bindValue(':topicContext', $envelope->topic()->context(), SQLITE3_TEXT);
+            $statement->bindValue(':topicName', $envelope->topic()->name(), SQLITE3_TEXT);
+            $statement->bindValue(':topic', $envelope->topic()->asString(), SQLITE3_TEXT);
+            $statement->bindValue(':event', $envelope->payload()->asJson(), SQLITE3_TEXT);
 
             $result = $statement->execute();
             $statement->reset();
 
             if ($result === false) {
-                // Reuse legacy exceptions kept under src/old for now to minimize changes.
                 throw new FailedToStoreEventForUnknownReasonException($envelope->eventId());
             }
         } catch (Throwable $exception) {

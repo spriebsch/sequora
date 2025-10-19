@@ -1,19 +1,12 @@
 <?php declare(strict_types=1);
 
-/*
- * This file is part of EventStore.
- *
- * (c) Stefan Priebsch <stefan@priebsch.de>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace spriebsch\sequora;
 
-namespace spriebsch\eventstore;
-
+use RuntimeException;
+use spriebsch\DomainEvent\EventId;
 use Throwable;
 
-final class FailedToStoreEventException extends Exception
+final class FailedToStoreEventException extends RuntimeException implements SequoraException
 {
     public function __construct(EventId $eventId, Throwable $exception)
     {

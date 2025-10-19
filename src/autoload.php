@@ -7,16 +7,18 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\eventstore\\emptyeventscollectionexception' => '/old/EmptyEventsCollectionException.php',
-                'spriebsch\\eventstore\\eventreader' => '/old/EventReader.php',
-                'spriebsch\\eventstore\\events' => '/Events.php',
-                'spriebsch\\eventstore\\failedtostoreeventexception' => '/old/FailedToStoreEventException.php',
-                'spriebsch\\eventstore\\failedtostoreeventforunknownreasonexception' => '/old/FailedToStoreEventForUnknownReasonException.php',
-                'spriebsch\\eventstore\\sqliteeventreader' => '/old/SqliteEventReader.php',
                 'spriebsch\\eventstore\\sqliteeventwriter' => '/SqliteEventWriter.php',
+                'spriebsch\\sequora\\databasereader' => '/database/DatabaseReader.php',
                 'spriebsch\\sequora\\databasewriter' => '/database/DatabaseWriter.php',
+                'spriebsch\\sequora\\eventreader' => '/EventReader.php',
+                'spriebsch\\sequora\\events' => '/events/Events.php',
                 'spriebsch\\sequora\\eventwriter' => '/EventWriter.php',
+                'spriebsch\\sequora\\failedtostoreeventexception' => '/database/FailedToStoreEventException.php',
+                'spriebsch\\sequora\\failedtostoreeventforunknownreasonexception' => '/database/FailedToStoreEventForUnknownReasonException.php',
+                'spriebsch\\sequora\\noeventsexception' => '/events/NoEventsException.php',
+                'spriebsch\\sequora\\sequoraexception' => '/SequoraException.php',
                 'spriebsch\\sequora\\sequorawriter' => '/SequoraWriter.php',
+                'spriebsch\\sequora\\sqlitedatabasereader' => '/database/sqlite/SqliteDatabaseReader.php',
                 'spriebsch\\sequora\\sqlitedatabasewriter' => '/database/sqlite/SqliteDatabaseWriter.php',
                 'spriebsch\\sequora\\sqlitesequoraschema' => '/database/sqlite/SqliteSequoraSchema.php'
             );

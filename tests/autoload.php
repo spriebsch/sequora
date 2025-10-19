@@ -7,7 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\sequora\\sqlitedatabasewritertest' => '/SqliteDatabaseWriterTest.php',
+                'spriebsch\\sequora\\sqlitedatabasetest' => '/SqliteDatabaseTest.php',
                 'spriebsch\\sequora\\testevent' => '/doubles/TestEvent.php',
                 'spriebsch\\sequora\\tests\\sqlitesequoraschematest' => '/SqliteSequoraSchemaTest.php'
             );

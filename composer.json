@@ -5,7 +5,8 @@
   "require": {
     "php": ">=8.4",
     "spriebsch/domain-event": "*",
-    "spriebsch/sqlite": "*"
+    "spriebsch/sqlite": "*",
+    "ext-sqlite3": "*"
   },
   "autoload": {
     "classmap": [
