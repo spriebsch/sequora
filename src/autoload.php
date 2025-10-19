@@ -10,13 +10,15 @@ spl_autoload_register(
                 'spriebsch\\eventstore\\emptyeventscollectionexception' => '/EmptyEventsCollectionException.php',
                 'spriebsch\\eventstore\\eventreader' => '/EventReader.php',
                 'spriebsch\\eventstore\\events' => '/Events.php',
-                'spriebsch\\eventstore\\eventwriter' => '/EventWriter.php',
                 'spriebsch\\eventstore\\failedtostoreeventexception' => '/FailedToStoreEventException.php',
                 'spriebsch\\eventstore\\failedtostoreeventforunknownreasonexception' => '/FailedToStoreEventForUnknownReasonException.php',
                 'spriebsch\\eventstore\\sqliteeventreader' => '/SqliteEventReader.php',
-                'spriebsch\\eventstore\\sqliteeventstoreschema' => '/SqliteEventStoreSchema.php',
                 'spriebsch\\eventstore\\sqliteeventwriter' => '/SqliteEventWriter.php',
-                'spriebsch\\projecttemplate\\helloworld' => '/HelloWorld.php'
+                'spriebsch\\projecttemplate\\helloworld' => '/HelloWorld.php',
+                'spriebsch\\sequora\\databasewriter' => '/DatabaseWriter.php',
+                'spriebsch\\sequora\\eventwriter' => '/EventWriter.php',
+                'spriebsch\\sequora\\sequorawriter' => '/EventStoreWriter.php',
+                'spriebsch\\sequora\\sqlitesequoraschema' => '/SqliteSequoraSchema.php'
             );
         }
         $cn = strtolower($class);

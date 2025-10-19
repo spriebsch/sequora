@@ -33,7 +33,15 @@ final class SqliteSequoraSchema extends SqliteSchema
         return 'BEGIN TRANSACTION; CREATE TABLE `sequora-events` (
             `id` INTEGER PRIMARY KEY AUTOINCREMENT,
             `eventId` TEXT UNIQUE,
+            `schemaVersion` INTEGER,
             `correlationId` TEXT,
+            `causationId` TEXT,
+            `receivedAt` TEXT,
+            `persistedAt` TEXT,
+            `topicVendor` TEXT,
+            `topicDomain` TEXT,
+            `topicContext` TEXT,
+            `topicName` TEXT,
             `topic` TEXT,
             `event` TEXT
         ); END TRANSACTION;';

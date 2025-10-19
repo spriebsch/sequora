@@ -7,7 +7,8 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\projecttemplate\\helloworldtest' => '/HelloWorldTest.php'
+                'spriebsch\\projecttemplate\\helloworldtest' => '/HelloWorldTest.php',
+                'spriebsch\\sequora\\tests\\sqlitesequoraschematest' => '/SqliteSequoraSchemaTest.php'
             );
         }
         $cn = strtolower($class);
