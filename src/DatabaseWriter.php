@@ -2,9 +2,5 @@
 
 namespace spriebsch\sequora;
 
-use spriebsch\DomainEvent\Envelope;
-
-interface DatabaseWriter
-{
-    public function write(Envelope $envelope): void;
-}
+// Shim for legacy autoloader mapping.
+require_once __DIR__ . '/database/DatabaseWriter.php';

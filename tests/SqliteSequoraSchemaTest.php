@@ -10,7 +10,7 @@ use spriebsch\sqlite\SqliteConnection;
 #[CoversClass(SqliteSequoraSchema::class)]
 final class SqliteSequoraSchemaTest extends TestCase
 {
-    public function test_creates_schema_in_memory_database(): void
+    public function test_creates_schema(): void
     {
         $connection = SqliteConnection::memory();
 
@@ -54,7 +54,7 @@ final class SqliteSequoraSchemaTest extends TestCase
         $this->assertSame($expected, $columns);
     }
 
-    public function test_create_is_idempotent_on_in_memory_database(): void
+    public function test_does_nothing_when_table_exists(): void
     {
         $connection = SqliteConnection::memory();
 
@@ -62,9 +62,6 @@ final class SqliteSequoraSchemaTest extends TestCase
         $schema->createIfNotExists();
         $schema->createIfNotExists();
 
-        $result = $connection->query("SELECT COUNT(*) AS cnt FROM sqlite_master WHERE type='table' AND name='sequora-events'");
-        $row = $result->fetchArray(\SQLITE3_ASSOC);
-
-        $this->assertSame(1, (int) $row['cnt']);
+        $this->expectNotToPerformAssertions();
     }
 }

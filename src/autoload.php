@@ -7,18 +7,18 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\eventstore\\emptyeventscollectionexception' => '/EmptyEventsCollectionException.php',
-                'spriebsch\\eventstore\\eventreader' => '/EventReader.php',
+                'spriebsch\\eventstore\\emptyeventscollectionexception' => '/old/EmptyEventsCollectionException.php',
+                'spriebsch\\eventstore\\eventreader' => '/old/EventReader.php',
                 'spriebsch\\eventstore\\events' => '/Events.php',
-                'spriebsch\\eventstore\\failedtostoreeventexception' => '/FailedToStoreEventException.php',
-                'spriebsch\\eventstore\\failedtostoreeventforunknownreasonexception' => '/FailedToStoreEventForUnknownReasonException.php',
-                'spriebsch\\eventstore\\sqliteeventreader' => '/SqliteEventReader.php',
+                'spriebsch\\eventstore\\failedtostoreeventexception' => '/old/FailedToStoreEventException.php',
+                'spriebsch\\eventstore\\failedtostoreeventforunknownreasonexception' => '/old/FailedToStoreEventForUnknownReasonException.php',
+                'spriebsch\\eventstore\\sqliteeventreader' => '/old/SqliteEventReader.php',
                 'spriebsch\\eventstore\\sqliteeventwriter' => '/SqliteEventWriter.php',
-                'spriebsch\\projecttemplate\\helloworld' => '/HelloWorld.php',
-                'spriebsch\\sequora\\databasewriter' => '/DatabaseWriter.php',
+                'spriebsch\\sequora\\databasewriter' => '/database/DatabaseWriter.php',
                 'spriebsch\\sequora\\eventwriter' => '/EventWriter.php',
-                'spriebsch\\sequora\\sequorawriter' => '/EventStoreWriter.php',
-                'spriebsch\\sequora\\sqlitesequoraschema' => '/SqliteSequoraSchema.php'
+                'spriebsch\\sequora\\sequorawriter' => '/SequoraWriter.php',
+                'spriebsch\\sequora\\sqlitedatabasewriter' => '/database/sqlite/SqliteDatabaseWriter.php',
+                'spriebsch\\sequora\\sqlitesequoraschema' => '/database/sqlite/SqliteSequoraSchema.php'
             );
         }
         $cn = strtolower($class);
