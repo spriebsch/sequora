@@ -1,2 +1,3 @@
-# sequora
+# Sequora
+
 The Next-Generation Event Store.
