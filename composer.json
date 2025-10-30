@@ -1,6 +1,6 @@
 {
-  "name": "spriebsch/project-template",
-  "description": "A simple template for new projects.",
+  "name": "spriebsch/sequora",
+  "description": "The Event Store - Every developer's dream",
   "type": "project",
   "require": {
     "php": ">=8.4",
