@@ -22,8 +22,7 @@ final class SqliteDatabaseTest extends TestCase
         $event1 = new TestEvent();
         $event2 = new TestEvent();
 
-        $writer->store(Envelope::from($event1));
-        $writer->store(Envelope::from($event2));
+        $writer->storeEnvelopes(Envelope::from($event1), Envelope::from($event2));
 
         $events = $reader->all();
 

@@ -30,13 +30,13 @@ final readonly class SqliteDatabaseReader implements DatabaseReader
 
         while ($row = $queryResult->fetchArray(SQLITE3_ASSOC)) {
             $events[] = Envelope::fromStorage(
-                EventId::from($row['eventId']),
+                EventId::from(BinaryUUID::from($row['eventId'])),
                 Timestamp::from($row['receivedAt']),
                 Timestamp::from($row['persistedAt']),
                 $row['event'],
                 TestEvent::class,
                 Topic::fromString($row['topic']),
-                $row['causationId'] ? CausationId::from($row['causationId']) : null,
+                isset($row['causationId']) && $row['causationId'] !== null ? CausationId::from(BinaryUUID::from($row['causationId'])) : null,
                 SchemaVersion::from((int) $row['schemaVersion']),
             );
         }

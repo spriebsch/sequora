@@ -7,7 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\eventstore\\sqliteeventwriter' => '/SqliteEventWriter.php',
+                'spriebsch\\sequora\\binaryuuid' => '/BinaryUUID.php',
                 'spriebsch\\sequora\\databasereader' => '/database/DatabaseReader.php',
                 'spriebsch\\sequora\\databasewriter' => '/database/DatabaseWriter.php',
                 'spriebsch\\sequora\\eventreader' => '/EventReader.php',

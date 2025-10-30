@@ -6,9 +6,5 @@ use spriebsch\DomainEvent\Envelope;
 
 interface DatabaseWriter
 {
-    public function beginTransaction(): void;
-
-    public function store(Envelope $envelope): void;
-
-    public function commitTransaction(): void;
+    public function storeEnvelopes(Envelope ...$envelopes): void;
 }

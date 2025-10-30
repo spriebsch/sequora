@@ -11,12 +11,12 @@ class SequoraWriter implements EventWriter
 
     public function store(DomainEvent ...$events): void
     {
-        $this->dbWriter->beginTransaction();
+        $envelopes = [];
 
         foreach ($events as $event) {
-            $this->dbWriter->store(Envelope::from($event));
+            $envelopes[] = Envelope::from($event);
         }
 
-        $this->dbWriter->commitTransaction();
+        $this->dbWriter->storeEnvelopes($envelopes);
     }
 }
