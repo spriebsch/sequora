@@ -3,7 +3,6 @@
 namespace spriebsch\sequora;
 
 use spriebsch\DomainEvent\Envelope;
-use spriebsch\DomainEvent\JsonDomainEventSerializer;
 use spriebsch\sqlite\Connection;
 use spriebsch\timestamp\Timestamp;
 use SQLite3Stmt;
