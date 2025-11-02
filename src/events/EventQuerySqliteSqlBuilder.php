@@ -16,6 +16,7 @@ final readonly class EventQuerySqliteSqlBuilder
 
         $where = [];
 
+        $where = $this->addEventId($query, $where, $connection);
         $where = $this->addTopic($query, $where, $connection);
 
         $sql = 'SELECT * FROM `sequora-events`';
@@ -27,6 +28,22 @@ final readonly class EventQuerySqliteSqlBuilder
         $statement = $connection->prepare($sql);
 
         return $statement;
+    }
+
+    private function addEventId(EventQuery $query, array $where, SqliteConnection $connection): array
+    {
+        if ($query->afterEventId() === null) {
+            return $where;
+        }
+
+        $where[] = sprintf(
+            'id > (SELECT id FROM `sequora-events` WHERE eventId=\'%s\')',
+            $connection->escapeString(
+                BinaryUUID::toBinary($query->afterEventId())
+            )
+        );
+
+        return $where;
     }
 
     private function addTopic(EventQuery $query, array $where, SqliteConnection $connection): array

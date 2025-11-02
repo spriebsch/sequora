@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\Topic;
 use spriebsch\sqlite\SqliteConnection;
 
@@ -14,7 +15,7 @@ use spriebsch\sqlite\SqliteConnection;
 final class EventQuerySqliteSqlBuilderTest extends TestCase
 {
     #[DataProvider('provideQueries')]
-    public function test_some(EventQuery $query, string $sql): void
+    public function test_builds_queries(EventQuery $query, string $sql): void
     {
         $connection = SqliteConnection::memory();
         SqliteSequoraSchema::from($connection)->createIfNotExists();
@@ -26,6 +27,8 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
 
     public static function provideQueries(): array
     {
+        $eventId = EventId::generate();
+
         return [
             [
                 EventQuery::from(),
@@ -34,6 +37,22 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
             [
                 EventQuery::from()->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name')),
                 'SELECT * FROM `sequora-events` WHERE topic IN (\'the-vendor.the-domain.the-context.the-name\')',
+            ],
+            [
+                EventQuery::from()->startingAfter($eventId),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE id > (SELECT id FROM `sequora-events` WHERE eventId=\'%s\')',
+                    BinaryUUID::toBinary($eventId)
+                )
+            ],
+            [
+                EventQuery::from()
+                    ->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name'))
+                    ->startingAfter($eventId),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE id > (SELECT id FROM `sequora-events` WHERE eventId=\'%s\') AND topic IN (\'the-vendor.the-domain.the-context.the-name\')',
+                    BinaryUUID::toBinary($eventId)
+                )
             ],
         ];
     }

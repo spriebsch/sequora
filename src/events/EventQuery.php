@@ -2,6 +2,7 @@
 
 namespace spriebsch\sequora;
 
+use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\Topic;
 use InvalidArgumentException;
 
@@ -17,6 +18,11 @@ final readonly class EventQuery
     )
     {
         $this->ensureOnlyAllowedKeys($conditions);
+    }
+
+    public function startingAfter(EventId $eventId): self
+    {
+        return new self(array_merge($this->conditions, ['afterEventId' => $eventId]));
     }
 
     public function withTopics(Topic ...$topics): self
@@ -37,17 +43,12 @@ final readonly class EventQuery
         return $this->conditions['topics'] ?? [];
     }
 
+    public function afterEventId(): ?EventId
+    {
+        return $this->conditions['afterEventId'] ?? null;
+    }
+
 /*
-    public function whereTopic(Topic $topic): self
-    {
-        return $this->and("topic = :topic", [':topic' => $topic->asString()]);
-    }
-
-    public function whereTopicString(string $topic): self
-    {
-        return $this->and("topic = :topic", [':topic' => $topic]);
-    }
-
     public function whereEventId(EventId $eventId): self
     {
         return $this->and("eventId = :eventId", [':eventId' => BinaryUUID::toBinary($eventId)]);
@@ -169,7 +170,7 @@ final readonly class EventQuery
 
     private function ensureOnlyAllowedKeys(array $conditions): void
     {
-        $allowedKeys = ['topics'];
+        $allowedKeys = ['topics', 'afterEventId'];
         $keys = array_keys($conditions);
 
         $unknown = array_diff($keys, $allowedKeys);

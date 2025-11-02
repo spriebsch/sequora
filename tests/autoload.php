@@ -7,6 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'spriebsch\\sequora\\eventquerymissingteststest' => '/EventQueryMissingTestsTest.php',
                 'spriebsch\\sequora\\eventquerysqlitesqlbuildertest' => '/EventQuerySqliteSqlBuilderTest.php',
                 'spriebsch\\sequora\\eventquerytest' => '/EventQueryTest.php',
                 'spriebsch\\sequora\\sqlitedatabasetest' => '/SqliteDatabaseTest.php',
