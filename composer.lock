@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c611bf47537b11af71fd73831785917c",
+    "content-hash": "27f80262e3faa8f8cbd498cbd68da88c",
     "packages": [
         {
             "name": "crell/attributeutils",
@@ -306,16 +306,16 @@
         },
         {
             "name": "spriebsch/sqlite",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/sqlite.git",
-                "reference": "e46d70767783b42c613b6bfea3f308759cee5259"
+                "reference": "609f4bda497ef62b583f24f2aa1f65f9ee58a52d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/e46d70767783b42c613b6bfea3f308759cee5259",
-                "reference": "e46d70767783b42c613b6bfea3f308759cee5259",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/609f4bda497ef62b583f24f2aa1f65f9ee58a52d",
+                "reference": "609f4bda497ef62b583f24f2aa1f65f9ee58a52d",
                 "shasum": ""
             },
             "require": {
@@ -343,9 +343,9 @@
             "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
             "support": {
                 "issues": "https://github.com/spriebsch/sqlite/issues",
-                "source": "https://github.com/spriebsch/sqlite/tree/2.0.0"
+                "source": "https://github.com/spriebsch/sqlite/tree/2.1.0"
             },
-            "time": "2025-04-29T14:58:44+00:00"
+            "time": "2025-11-02T12:53:33+00:00"
         },
         {
             "name": "spriebsch/timestamp",

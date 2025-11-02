@@ -38,8 +38,7 @@ final readonly class EventQuerySqliteSqlBuilder
         }
 
         foreach ($query->topics() as $topic) {
-            $topics[] = '\'' . str_replace('\'', '\'\'', $topic->asString()) . '\'';
-            // $topic[] = '\'' . $connection->escapeString($topic->asString()) . '\'';
+            $topics[] = '\'' . $connection->escapeString($topic->asString()) . '\'';
         }
 
         $where[] = 'topic IN (' . implode(',', $topics) . ')';
