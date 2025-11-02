@@ -24,7 +24,7 @@ final class SqliteDatabaseTest extends TestCase
 
         $writer->storeEnvelopes(Envelope::from($event1), Envelope::from($event2));
 
-        $events = $reader->all();
+        $events = $reader->query(EventQuery::from());
 
         $this->assertCount(2, $events);
         $this->assertEquals($event1, $events->asArray()[0]);

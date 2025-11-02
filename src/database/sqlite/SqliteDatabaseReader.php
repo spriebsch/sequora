@@ -20,10 +20,10 @@ final readonly class SqliteDatabaseReader implements DatabaseReader
 
     private function __construct(private Connection $connection) {}
 
-    public function all(): Events
+    public function query(EventQuery $query): Events
     {
-        $sql = "SELECT * FROM 'sequora-events';";
-        $statement = $this->connection->prepare($sql);
+        $statement = new EventQuerySqliteSqlBuilder()->build($query, $this->connection);
+
         $queryResult = $statement->execute();
 
         $events = [];
