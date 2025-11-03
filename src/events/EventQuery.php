@@ -22,6 +22,11 @@ final readonly class EventQuery
         $this->ensureOnlyAllowedKeys($conditions);
     }
 
+    public function limit(int $limit): self
+    {
+        return new self(array_merge($this->conditions, ['limit' => $limit]));
+    }
+
     public function after(EventId $eventId): self
     {
         return new self(array_merge($this->conditions, ['afterEventId' => $eventId]));
@@ -70,6 +75,10 @@ final readonly class EventQuery
         return $this->conditions['afterEventId'] ?? null;
     }
 
+    public function limitValue(): ?int
+    {
+        return $this->conditions['limit'] ?? null;
+    }
 /*
     public function whereSchemaVersion(int $schemaVersion): self
     {
@@ -130,7 +139,7 @@ final readonly class EventQuery
 
     private function ensureOnlyAllowedKeys(array $conditions): void
     {
-        $allowedKeys = ['topics', 'afterEventId', 'correlationId', 'causationId'];
+        $allowedKeys = ['topics', 'afterEventId', 'correlationId', 'causationId', 'limit'];
         $keys = array_keys($conditions);
 
         $unknown = array_diff($keys, $allowedKeys);

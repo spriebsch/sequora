@@ -12,8 +12,7 @@ final readonly class EventQuerySqliteSqlBuilder
      */
     public function build(EventQuery $query, SqliteConnection $connection): SQLite3Stmt
     {
-        $parameters = [];
-
+        $limit = '';
         $where = [];
 
         $where = $this->addCorrelationId($query, $where, $connection);
@@ -26,6 +25,8 @@ final readonly class EventQuerySqliteSqlBuilder
         if (count($where) > 0) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
+
+        $sql .= $this->limit($query);
 
         $statement = $connection->prepare($sql);
 
@@ -95,5 +96,14 @@ final readonly class EventQuerySqliteSqlBuilder
         $where[] = 'topic IN (' . implode(',', $topics) . ')';
 
         return $where;
+    }
+
+    private function limit(EventQuery $query): string
+    {
+        if ($query->limitValue() === null) {
+            return '';
+        }
+
+        return ' LIMIT ' . $query->limitValue();
     }
 }

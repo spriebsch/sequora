@@ -41,14 +41,22 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
         $eventId = EventId::from('51523a51-1441-409b-8181-e444fe651127'); // binary string contains '
         $correlationId = CorrelationId::generate();
         $causationId = CausationId::generate();
+        $topic1 = Topic::fromString('the-vendor.the-domain.the-context.the-name-1');
+        $topic2 = Topic::fromString('the-vendor.the-domain.the-context.the-name-2');
 
         return [
-            'all'                 => [
+            'all'                       => [
                 $connection,
                 EventQuery::from(),
                 'SELECT * FROM `sequora-events`',
             ],
-            'with correlation ID' => [
+            'all with limit'            => [
+                $connection,
+                EventQuery::from()
+                          ->limit(100),
+                'SELECT * FROM `sequora-events` LIMIT 100',
+            ],
+            'with correlation ID'       => [
                 $connection,
                 EventQuery::from()
                           ->withCorrelationId($correlationId),
@@ -57,7 +65,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     $connection->escapeString(BinaryUUID::toBinary($correlationId))
                 )
             ],
-            'with causation ID' => [
+            'with causation ID'         => [
                 $connection,
                 EventQuery::from()
                           ->withCausationId($causationId),
@@ -66,13 +74,26 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     $connection->escapeString(BinaryUUID::toBinary($causationId))
                 )
             ],
-            [
+            'with topic'                => [
                 $connection,
                 EventQuery::from()
-                          ->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name')),
-                'SELECT * FROM `sequora-events` WHERE topic IN (\'the-vendor.the-domain.the-context.the-name\')',
+                          ->withTopics($topic1),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE topic IN (\'%s\')',
+                    $topic1->asString()
+                )
             ],
-            [
+            'with topics'               => [
+                $connection,
+                EventQuery::from()
+                          ->withTopics($topic1, $topic2),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE topic IN (\'%s\',\'%s\')',
+                    $topic1->asString(),
+                    $topic2->asString()
+                )
+            ],
+            'after event ID'            => [
                 $connection,
                 EventQuery::from()->after($eventId),
                 sprintf(
@@ -83,10 +104,10 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     ),
                 )
             ],
-            [
+            'with topic after event ID' => [
                 $connection,
                 EventQuery::from()
-                          ->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name'))
+                          ->withTopics($topic1)
                           ->after($eventId),
                 sprintf(
                     'SELECT * FROM `sequora-events` WHERE id>(%s) AND topic IN (\'%s\')',
@@ -94,7 +115,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                         'SELECT id FROM `sequora-events` WHERE eventId=\'%s\'',
                         $connection->escapeString(BinaryUUID::toBinary($eventId))
                     ),
-                    'the-vendor.the-domain.the-context.the-name'
+                    $topic1->asString()
                 )
             ],
         ];
