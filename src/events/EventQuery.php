@@ -2,6 +2,8 @@
 
 namespace spriebsch\sequora;
 
+use spriebsch\DomainEvent\CausationId;
+use spriebsch\DomainEvent\CorrelationId;
 use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\Topic;
 use InvalidArgumentException;
@@ -20,9 +22,19 @@ final readonly class EventQuery
         $this->ensureOnlyAllowedKeys($conditions);
     }
 
-    public function startingAfter(EventId $eventId): self
+    public function after(EventId $eventId): self
     {
         return new self(array_merge($this->conditions, ['afterEventId' => $eventId]));
+    }
+
+    public function withCorrelationId(CorrelationId $correlationId): self
+    {
+        return new self(array_merge($this->conditions, ['correlationId' => $correlationId]));
+    }
+
+    public function withCausationId(CausationId $causationId): self
+    {
+        return new self(array_merge($this->conditions, ['causationId' => $causationId]));
     }
 
     public function withTopics(Topic ...$topics): self
@@ -38,40 +50,27 @@ final readonly class EventQuery
         return new self(array_merge($this->conditions, ['topics' => $topics]));
     }
 
-    public function topics(): array
+    public function correlationIdValue(): ?CorrelationId
+    {
+        return $this->conditions['correlationId'] ?? null;
+    }
+
+    public function causationIdValue(): ?CausationId
+    {
+        return $this->conditions['causationId'] ?? null;
+    }
+
+    public function topicsValue(): array
     {
         return $this->conditions['topics'] ?? [];
     }
 
-    public function afterEventId(): ?EventId
+    public function afterValue(): ?EventId
     {
         return $this->conditions['afterEventId'] ?? null;
     }
 
 /*
-    public function whereEventId(EventId $eventId): self
-    {
-        return $this->and("eventId = :eventId", [':eventId' => BinaryUUID::toBinary($eventId)]);
-    }
-
-    public function whereCorrelationId(?CorrelationId $correlationId): self
-    {
-        if ($correlationId === null) {
-            return $this->and("correlationId IS NULL", []);
-        }
-
-        return $this->and("correlationId = :correlationId", [':correlationId' => BinaryUUID::toBinary($correlationId)]);
-    }
-
-    public function whereCausationId(?CausationId $causationId): self
-    {
-        if ($causationId === null) {
-            return $this->and("causationId IS NULL", []);
-        }
-
-        return $this->and("causationId = :causationId", [':causationId' => BinaryUUID::toBinary($causationId)]);
-    }
-
     public function whereSchemaVersion(int $schemaVersion): self
     {
         return $this->and("schemaVersion = :schemaVersion", [':schemaVersion' => $schemaVersion]);
@@ -93,26 +92,6 @@ final readonly class EventQuery
         ]);
     }
 
-    public function orderByReceivedAtAsc(): self
-    {
-        return $this->orderedBy('receivedAt', 'ASC');
-    }
-
-    public function orderByReceivedAtDesc(): self
-    {
-        return $this->orderedBy('receivedAt', 'DESC');
-    }
-
-    public function orderByPersistedAtAsc(): self
-    {
-        return $this->orderedBy('persistedAt', 'ASC');
-    }
-
-    public function orderByPersistedAtDesc(): self
-    {
-        return $this->orderedBy('persistedAt', 'DESC');
-    }
-
     public function limit(int $limit): self
     {
         return new self($this->where, $this->params, $this->orderBy, $this->orderDirection, $limit, $this->offset);
@@ -123,25 +102,6 @@ final readonly class EventQuery
         return new self($this->where, $this->params, $this->orderBy, $this->orderDirection, $this->limit, $offset);
     }
 
-    public function where(): array
-    {
-        return $this->where;
-    }
-
-    public function params(): array
-    {
-        return $this->params;
-    }
-
-    public function orderBy(): ?string
-    {
-        return $this->orderBy;
-    }
-
-    public function orderDirection(): string
-    {
-        return $this->orderDirection;
-    }
 
     public function limitValue(): ?int
     {
@@ -170,7 +130,7 @@ final readonly class EventQuery
 
     private function ensureOnlyAllowedKeys(array $conditions): void
     {
-        $allowedKeys = ['topics', 'afterEventId'];
+        $allowedKeys = ['topics', 'afterEventId', 'correlationId', 'causationId'];
         $keys = array_keys($conditions);
 
         $unknown = array_diff($keys, $allowedKeys);

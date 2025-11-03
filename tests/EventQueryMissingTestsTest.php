@@ -17,10 +17,10 @@ final class EventQueryMissingTestsTest extends TestCase
     {
         $eventId = EventId::generate();
 
-        $query = EventQuery::from()->startingAfter($eventId);
+        $query = EventQuery::from()->after($eventId);
 
-        $this->assertNotNull($query->afterEventId());
-        $this->assertTrue($eventId->equals($query->afterEventId()));
+        $this->assertNotNull($query->afterValue());
+        $this->assertTrue($eventId->equals($query->afterValue()));
     }
 
     public function test_from_rejects_unknown_condition_keys(): void
@@ -37,8 +37,8 @@ final class EventQueryMissingTestsTest extends TestCase
 
         $query = EventQuery::from(['afterEventId' => $eventId]);
 
-        $this->assertNotNull($query->afterEventId());
-        $this->assertTrue($eventId->equals($query->afterEventId()));
+        $this->assertNotNull($query->afterValue());
+        $this->assertTrue($eventId->equals($query->afterValue()));
     }
 
     public function test_with_topics_and_starting_after_both_preserved(): void
@@ -46,9 +46,9 @@ final class EventQueryMissingTestsTest extends TestCase
         $eventId = EventId::generate();
         $topic = Topic::fromString('the-vendor.the-domain.the-context.the-name');
 
-        $query = EventQuery::from()->withTopics($topic)->startingAfter($eventId);
+        $query = EventQuery::from()->withTopics($topic)->after($eventId);
 
-        $this->assertSame([$topic], $query->topics());
-        $this->assertTrue($eventId->equals($query->afterEventId()));
+        $this->assertSame([$topic], $query->topicsValue());
+        $this->assertTrue($eventId->equals($query->afterValue()));
     }
 }

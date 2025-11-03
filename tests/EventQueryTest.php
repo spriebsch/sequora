@@ -17,7 +17,7 @@ final class EventQueryTest extends TestCase
 
         $query = $query->withTopics($topic);
 
-        $this->assertEquals([$topic], $query->topics());
+        $this->assertEquals([$topic], $query->topicsValue());
     }
 
     public function test_append_topics(): void
@@ -28,6 +28,6 @@ final class EventQueryTest extends TestCase
 
         $query = $query->withTopics($topic2);
 
-        $this->assertEquals([$topic1, $topic2], $query->topics());
+        $this->assertEquals([$topic1, $topic2], $query->topicsValue());
     }
 }

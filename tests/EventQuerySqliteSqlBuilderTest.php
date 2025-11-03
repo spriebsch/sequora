@@ -6,6 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use spriebsch\DomainEvent\CausationId;
+use spriebsch\DomainEvent\CorrelationId;
 use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\Topic;
 use spriebsch\sqlite\SqliteConnection;
@@ -15,9 +17,8 @@ use spriebsch\sqlite\SqliteConnection;
 final class EventQuerySqliteSqlBuilderTest extends TestCase
 {
     #[DataProvider('provideQueries')]
-    public function test_builds_queries(EventQuery $query, string $sql): void
+    public function test_builds_queries(SqliteConnection $connection, EventQuery $query, string $sql): void
     {
-        $connection = SqliteConnection::memory();
         SqliteSequoraSchema::from($connection)->createIfNotExists();
 
         $statement = new EventQuerySqliteSqlBuilder()->build($query, $connection);
@@ -25,33 +26,75 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
         $this->assertSame($sql, $statement->getSQL());
     }
 
+    /*
+    public function test_some(): void
+    {
+        $uuid = UUIDv4::from('51523a51-1441-409b-8181-e444fe651127');
+        var_dump($uuid);
+        var_dump(BinaryUUID::toBinary($uuid));
+    }
+    */
+
     public static function provideQueries(): array
     {
-        $eventId = EventId::generate();
+        $connection = SqliteConnection::memory();
+        $eventId = EventId::from('51523a51-1441-409b-8181-e444fe651127'); // binary string contains '
+        $correlationId = CorrelationId::generate();
+        $causationId = CausationId::generate();
 
         return [
-            [
+            'all'                 => [
+                $connection,
                 EventQuery::from(),
                 'SELECT * FROM `sequora-events`',
             ],
-            [
-                EventQuery::from()->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name')),
-                'SELECT * FROM `sequora-events` WHERE topic IN (\'the-vendor.the-domain.the-context.the-name\')',
-            ],
-            [
-                EventQuery::from()->startingAfter($eventId),
+            'with correlation ID' => [
+                $connection,
+                EventQuery::from()
+                          ->withCorrelationId($correlationId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE id > (SELECT id FROM `sequora-events` WHERE eventId=\'%s\')',
-                    BinaryUUID::toBinary($eventId)
+                    'SELECT * FROM `sequora-events` WHERE correlationId=\'%s\'',
+                    $connection->escapeString(BinaryUUID::toBinary($correlationId))
+                )
+            ],
+            'with causation ID' => [
+                $connection,
+                EventQuery::from()
+                          ->withCausationId($causationId),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE causationId=\'%s\'',
+                    $connection->escapeString(BinaryUUID::toBinary($causationId))
                 )
             ],
             [
+                $connection,
                 EventQuery::from()
-                    ->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name'))
-                    ->startingAfter($eventId),
+                          ->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name')),
+                'SELECT * FROM `sequora-events` WHERE topic IN (\'the-vendor.the-domain.the-context.the-name\')',
+            ],
+            [
+                $connection,
+                EventQuery::from()->after($eventId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE id > (SELECT id FROM `sequora-events` WHERE eventId=\'%s\') AND topic IN (\'the-vendor.the-domain.the-context.the-name\')',
-                    BinaryUUID::toBinary($eventId)
+                    'SELECT * FROM `sequora-events` WHERE id>(%s)',
+                    sprintf(
+                        'SELECT id FROM `sequora-events` WHERE eventId=\'%s\'',
+                        $connection->escapeString(BinaryUUID::toBinary($eventId))
+                    ),
+                )
+            ],
+            [
+                $connection,
+                EventQuery::from()
+                          ->withTopics(Topic::fromString('the-vendor.the-domain.the-context.the-name'))
+                          ->after($eventId),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE id>(%s) AND topic IN (\'%s\')',
+                    sprintf(
+                        'SELECT id FROM `sequora-events` WHERE eventId=\'%s\'',
+                        $connection->escapeString(BinaryUUID::toBinary($eventId))
+                    ),
+                    'the-vendor.the-domain.the-context.the-name'
                 )
             ],
         ];
