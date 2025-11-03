@@ -17,6 +17,6 @@ class SequoraWriter implements EventWriter
             $envelopes[] = Envelope::from($event);
         }
 
-        $this->dbWriter->storeEnvelopes($envelopes);
+        $this->dbWriter->storeEnvelopes(...$envelopes);
     }
 }
