@@ -79,63 +79,6 @@ final readonly class EventQuery
     {
         return $this->conditions['limit'] ?? null;
     }
-/*
-    public function whereSchemaVersion(int $schemaVersion): self
-    {
-        return $this->and("schemaVersion = :schemaVersion", [':schemaVersion' => $schemaVersion]);
-    }
-
-    public function whereReceivedAtBetween(Timestamp $from, Timestamp $to): self
-    {
-        return $this->and("receivedAt BETWEEN :receivedFrom AND :receivedTo", [
-            ':receivedFrom' => $from->asString(),
-            ':receivedTo'   => $to->asString(),
-        ]);
-    }
-
-    public function wherePersistedAtBetween(Timestamp $from, Timestamp $to): self
-    {
-        return $this->and("persistedAt BETWEEN :persistedFrom AND :persistedTo", [
-            ':persistedFrom' => $from->asString(),
-            ':persistedTo'   => $to->asString(),
-        ]);
-    }
-
-    public function limit(int $limit): self
-    {
-        return new self($this->where, $this->params, $this->orderBy, $this->orderDirection, $limit, $this->offset);
-    }
-
-    public function offset(int $offset): self
-    {
-        return new self($this->where, $this->params, $this->orderBy, $this->orderDirection, $this->limit, $offset);
-    }
-
-
-    public function limitValue(): ?int
-    {
-        return $this->limit;
-    }
-
-    public function offsetValue(): ?int
-    {
-        return $this->offset;
-    }
-
-    private function and(string $condition, array $params): self
-    {
-        $where = $this->where;
-        $where[] = $condition;
-        $merged = $this->params + $params;
-
-        return new self($where, $merged, $this->orderBy, $this->orderDirection, $this->limit, $this->offset);
-    }
-
-    private function orderedBy(string $column, string $direction): self
-    {
-        return new self($this->where, $this->params, $column, $direction, $this->limit, $this->offset);
-    }
-    */
 
     private function ensureOnlyAllowedKeys(array $conditions): void
     {
