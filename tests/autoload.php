@@ -10,6 +10,7 @@ spl_autoload_register(
                 'spriebsch\\sequora\\eventquerymissingteststest' => '/EventQueryMissingTestsTest.php',
                 'spriebsch\\sequora\\eventquerysqlitesqlbuildertest' => '/EventQuerySqliteSqlBuilderTest.php',
                 'spriebsch\\sequora\\eventquerytest' => '/EventQueryTest.php',
+                'spriebsch\\sequora\\sequoratest' => '/SequoraTest.php',
                 'spriebsch\\sequora\\sqlitedatabasetest' => '/SqliteDatabaseTest.php',
                 'spriebsch\\sequora\\testevent' => '/doubles/TestEvent.php',
                 'spriebsch\\sequora\\tests\\sqlitesequoraschematest' => '/SqliteSequoraSchemaTest.php'

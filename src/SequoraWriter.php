@@ -7,7 +7,12 @@ use spriebsch\DomainEvent\Envelope;
 
 class SequoraWriter implements EventWriter
 {
-    public function __construct(private DatabaseWriter $dbWriter) {}
+    private function __construct(private DatabaseWriter $dbWriter) {}
+
+    public static function from(DatabaseWriter $dbWriter): self
+    {
+        return new self($dbWriter);
+    }
 
     public function store(DomainEvent ...$events): void
     {

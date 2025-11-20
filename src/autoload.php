@@ -20,6 +20,7 @@ spl_autoload_register(
                 'spriebsch\\sequora\\generatetopicmap' => '/GenerateTopicMap.php',
                 'spriebsch\\sequora\\noeventsexception' => '/events/NoEventsException.php',
                 'spriebsch\\sequora\\sequoraexception' => '/SequoraException.php',
+                'spriebsch\\sequora\\sequorareader' => '/SequoraReader.php',
                 'spriebsch\\sequora\\sequorawriter' => '/SequoraWriter.php',
                 'spriebsch\\sequora\\sqlitedatabasereader' => '/database/sqlite/SqliteDatabaseReader.php',
                 'spriebsch\\sequora\\sqlitedatabasewriter' => '/database/sqlite/SqliteDatabaseWriter.php',

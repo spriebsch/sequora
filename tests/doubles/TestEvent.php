@@ -8,4 +8,5 @@ use spriebsch\DomainEvent\MapToTopic;
 #[MapToTopic('spriebsch.sequora.test.event')]
 class TestEvent implements DomainEvent
 {
+    public function __construct(public ?string $payload = null) {}
 }
