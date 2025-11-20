@@ -41,4 +41,15 @@ final class EventQueryTest extends TestCase
 
         $this->assertEquals([$correlationId], $query->correlationIdValues());
     }
+
+    public function test_multiple_correlation_ids(): void
+    {
+        $correlationId1 = TestId::generate();
+        $correlationId2 = TestId::generate();
+        $query = EventQuery::from();
+
+        $query = $query->withCorrelationId($correlationId1)->withCorrelationId($correlationId2);
+
+        $this->assertEquals([$correlationId1, $correlationId2], $query->correlationIdValues());
+    }
 }
