@@ -13,6 +13,7 @@ spl_autoload_register(
                 'spriebsch\\sequora\\sequoratest' => '/SequoraTest.php',
                 'spriebsch\\sequora\\sqlitedatabasetest' => '/SqliteDatabaseTest.php',
                 'spriebsch\\sequora\\testevent' => '/doubles/TestEvent.php',
+                'spriebsch\\sequora\\testid' => '/doubles/TestId.php',
                 'spriebsch\\sequora\\tests\\sqlitesequoraschematest' => '/SqliteSequoraSchemaTest.php'
             );
         }

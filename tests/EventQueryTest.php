@@ -4,6 +4,7 @@ namespace spriebsch\sequora;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use spriebsch\DomainEvent\CausationId;
 use spriebsch\DomainEvent\Topic;
 
 #[CoversClass(EventQuery::class)]
@@ -29,5 +30,15 @@ final class EventQueryTest extends TestCase
         $query = $query->withTopics($topic2);
 
         $this->assertEquals([$topic1, $topic2], $query->topicsValue());
+    }
+
+    public function test_one_correlation_id(): void
+    {
+        $correlationId = TestId::generate();
+        $query = EventQuery::from();
+
+        $query = $query->withCorrelationId($correlationId);
+
+        $this->assertEquals([$correlationId], $query->correlationIdValues());
     }
 }

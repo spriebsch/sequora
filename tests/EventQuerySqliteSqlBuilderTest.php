@@ -40,6 +40,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
         $connection = SqliteConnection::memory();
         $eventId = EventId::from('51523a51-1441-409b-8181-e444fe651127'); // binary string contains '
         $correlationId = CorrelationId::generate();
+        $correlationId2 = CorrelationId::generate();
         $causationId = CausationId::generate();
         $topic1 = Topic::fromString('the-vendor.the-domain.the-context.the-name-1');
         $topic2 = Topic::fromString('the-vendor.the-domain.the-context.the-name-2');
@@ -56,13 +57,24 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->limit(100),
                 'SELECT * FROM `sequora-events` LIMIT 100',
             ],
-            'with correlation ID'       => [
+            'with one correlation ID'   => [
                 $connection,
                 EventQuery::from()
                           ->withCorrelationId($correlationId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE correlationId=\'%s\'',
+                    'SELECT * FROM `sequora-events` WHERE correlationId IN (\'%s\')',
                     $connection->escapeString(BinaryUUID::toBinary($correlationId))
+                )
+            ],
+            'with two correlation IDs'  => [
+                $connection,
+                EventQuery::from()
+                          ->withCorrelationId($correlationId)
+                          ->withCorrelationId($correlationId2),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE correlationId IN (\'%s\', \'%s\')',
+                    $connection->escapeString(BinaryUUID::toBinary($correlationId)),
+                    $connection->escapeString(BinaryUUID::toBinary($correlationId2))
                 )
             ],
             'with causation ID'         => [

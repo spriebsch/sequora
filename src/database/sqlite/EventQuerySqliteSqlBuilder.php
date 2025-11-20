@@ -15,7 +15,7 @@ final readonly class EventQuerySqliteSqlBuilder
         $limit = '';
         $where = [];
 
-        $where = $this->addCorrelationId($query, $where, $connection);
+        $where = $this->addCorrelationIds($query, $where, $connection);
         $where = $this->addCausationId($query, $where, $connection);
         $where = $this->addEventId($query, $where, $connection);
         $where = $this->addTopic($query, $where, $connection);
@@ -33,17 +33,21 @@ final readonly class EventQuerySqliteSqlBuilder
         return $statement;
     }
 
-    private function addCorrelationId(EventQuery $query, array $where, SqliteConnection $connection): array
+    private function addCorrelationIds(EventQuery $query, array $where, SqliteConnection $connection): array
     {
-        if ($query->correlationIdValue() === null) {
+        if (count($query->correlationIdValues()) === 0) {
             return $where;
         }
 
+        $values = [];
+
+        foreach ($query->correlationIdValues() as $correlationId) {
+            $values[] = "'" . $connection->escapeString(BinaryUUID::toBinary($correlationId)) . "'";
+        }
+
         $where[] = sprintf(
-            'correlationId=\'%s\'',
-            $connection->escapeString(
-                BinaryUUID::toBinary($query->correlationIdValue())
-            )
+            'correlationId IN (%s)',
+            implode(', ', $values)
         );
 
         return $where;

@@ -7,6 +7,7 @@ use spriebsch\DomainEvent\CorrelationId;
 use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\Topic;
 use InvalidArgumentException;
+use spriebsch\uuid\UUID;
 
 final readonly class EventQuery
 {
@@ -32,9 +33,16 @@ final readonly class EventQuery
         return new self(array_merge($this->conditions, ['afterEventId' => $eventId]));
     }
 
-    public function withCorrelationId(CorrelationId $correlationId): self
+    public function withCorrelationId(UUID $correlationId): self
     {
-        return new self(array_merge($this->conditions, ['correlationId' => $correlationId]));
+        if (isset($this->conditions['correlationIds'])) {
+            $conditions = $this->conditions;
+            $conditions['correlationIds'][] = $correlationId;
+
+            return new self($conditions);
+        }
+
+        return new self(array_merge($this->conditions, ['correlationIds' => [$correlationId]]));
     }
 
     public function withCausationId(CausationId $causationId): self
@@ -55,9 +63,9 @@ final readonly class EventQuery
         return new self(array_merge($this->conditions, ['topics' => $topics]));
     }
 
-    public function correlationIdValue(): ?CorrelationId
+    public function correlationIdValues(): array
     {
-        return $this->conditions['correlationId'] ?? null;
+        return $this->conditions['correlationIds'] ?? [];
     }
 
     public function causationIdValue(): ?CausationId
@@ -82,7 +90,7 @@ final readonly class EventQuery
 
     private function ensureOnlyAllowedKeys(array $conditions): void
     {
-        $allowedKeys = ['topics', 'afterEventId', 'correlationId', 'causationId', 'limit'];
+        $allowedKeys = ['topics', 'afterEventId', 'correlationIds', 'causationId', 'limit'];
         $keys = array_keys($conditions);
 
         $unknown = array_diff($keys, $allowedKeys);
