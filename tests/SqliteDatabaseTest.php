@@ -17,7 +17,7 @@ final class SqliteDatabaseTest extends TestCase
         SqliteSequoraSchema::from($connection)->createIfNotExists();
 
         $writer = SqliteDatabaseWriter::from($connection);
-        $reader = SqliteDatabaseReader::from($connection);
+        $reader = SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php');
 
         $event1 = new TestEvent();
         $event2 = new TestEvent();

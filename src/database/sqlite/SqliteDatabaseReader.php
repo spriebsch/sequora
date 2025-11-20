@@ -2,6 +2,7 @@
 
 namespace spriebsch\sequora;
 
+use RuntimeException;
 use spriebsch\DomainEvent\CausationId;
 use spriebsch\DomainEvent\Envelope;
 use spriebsch\DomainEvent\EventId;
@@ -13,12 +14,12 @@ use const SQLITE3_ASSOC;
 
 final readonly class SqliteDatabaseReader implements DatabaseReader
 {
-    public static function from(Connection $connection): self
+    public static function from(Connection $connection, array $topicMap): self
     {
-        return new self($connection);
+        return new self($connection, $topicMap);
     }
 
-    private function __construct(private Connection $connection) {}
+    private function __construct(private Connection $connection, private array $topicMap) {}
 
     public function query(EventQuery $query): Events
     {
@@ -29,14 +30,28 @@ final readonly class SqliteDatabaseReader implements DatabaseReader
         $events = [];
 
         while ($row = $queryResult->fetchArray(SQLITE3_ASSOC)) {
+
+            $topic = Topic::fromString($row['topic']);
+            $class = $this->topicMap[$topic->asString()] ?? null;
+
+            if ($class === null) {
+                throw new RuntimeException(sprintf('No class found for topic %s', $topic->asString()));
+            }
+
+            if ($row['causationId'] !== null) {
+                $causationId = CausationId::from(BinaryUUID::from($row['causationId']));
+            } else {
+                $causationId = null;
+            }
+
             $events[] = Envelope::fromStorage(
                 EventId::from(BinaryUUID::from($row['eventId'])),
                 Timestamp::from($row['receivedAt']),
                 Timestamp::from($row['persistedAt']),
                 $row['event'],
-                TestEvent::class,
-                Topic::fromString($row['topic']),
-                isset($row['causationId']) && $row['causationId'] !== null ? CausationId::from(BinaryUUID::from($row['causationId'])) : null,
+                $class,
+                $topic,
+                $causationId,
                 SchemaVersion::from((int) $row['schemaVersion']),
             );
         }

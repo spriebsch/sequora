@@ -18,7 +18,7 @@ final class SequoraTest extends TestCase
         $schema->createIfNotExists();
 
         $writer = SequoraWriter::from(SqliteDatabaseWriter::from($connection));
-        $reader = SequoraReader::from(SqliteDatabaseReader::from($connection));
+        $reader = SequoraReader::from(SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php'));
 
         $events = [
             new TestEvent('one'),
