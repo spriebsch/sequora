@@ -10,7 +10,7 @@ use spriebsch\sqlite\SqliteConnection;
 #[CoversClass(SequoraReader::class)]
 final class SequoraTest extends TestCase
 {
-    public function test_one_topic(): void
+    public function test_read_all(): void
     {
         $connection = SqliteConnection::memory();
 
