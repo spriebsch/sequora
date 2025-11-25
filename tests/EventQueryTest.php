@@ -11,6 +11,16 @@ use spriebsch\DomainEvent\Topic;
 #[CoversClass(EventQuerySqliteSqlBuilder::class)]
 final class EventQueryTest extends TestCase
 {
+    public function test_with_limit(): void
+    {
+        $limit = 25;
+        $query = EventQuery::from();
+
+        $query = $query->limit($limit);
+
+        $this->assertEquals($limit, $query->limitValue());
+    }
+
     public function test_one_topic(): void
     {
         $topic = Topic::fromString('the-vendor.the-domain.the-context.the-name');
@@ -51,5 +61,15 @@ final class EventQueryTest extends TestCase
         $query = $query->withCorrelationId($correlationId1)->withCorrelationId($correlationId2);
 
         $this->assertEquals([$correlationId1, $correlationId2], $query->correlationIdValues());
+    }
+
+    public function test_with_causation_id(): void
+    {
+        $causationId = CausationId::generate();
+        $query = EventQuery::from();
+
+        $query = $query->withCausationId($causationId);
+
+        $this->assertEquals($causationId, $query->causationIdValue());
     }
 }

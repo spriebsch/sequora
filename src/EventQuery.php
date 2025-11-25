@@ -52,10 +52,6 @@ final readonly class EventQuery
 
     public function withTopics(Topic ...$topics): self
     {
-        if (!is_array($topics)) {
-            $topics = [$topics];
-        }
-
         $currentTopics = $this->conditions['topics'] ?? [];
 
         $topics = array_merge($currentTopics, $topics);

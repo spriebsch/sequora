@@ -3,7 +3,6 @@
 namespace spriebsch\sequora;
 
 use InvalidArgumentException;
-use RuntimeException;
 use spriebsch\uuid\UUID as UUID;
 
 final readonly class BinaryUUID
@@ -12,13 +11,7 @@ final readonly class BinaryUUID
     {
         $hex = str_replace('-', '', strtolower($uuid->asString()));
 
-        $bin = pack('H*', $hex);
-
-        if ($bin === false || strlen($bin) !== 16) {
-            throw new RuntimeException('Failed to convert UUID to binary');
-        }
-
-        return $bin;
+        return pack('H*', $hex);
     }
 
     public static function from(string $binary): string
