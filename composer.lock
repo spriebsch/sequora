@@ -218,25 +218,28 @@
         },
         {
             "name": "spriebsch/domain-event",
-            "version": "1.1.0",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/domain-event.git",
-                "reference": "f4cf0a1a0c6833bbb7b68291ae59bdeb9dda71fb"
+                "reference": "a02a5620523d1f9c3c9be6601cbb58c5a563be9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/f4cf0a1a0c6833bbb7b68291ae59bdeb9dda71fb",
-                "reference": "f4cf0a1a0c6833bbb7b68291ae59bdeb9dda71fb",
+                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/a02a5620523d1f9c3c9be6601cbb58c5a563be9a",
+                "reference": "a02a5620523d1f9c3c9be6601cbb58c5a563be9a",
                 "shasum": ""
             },
             "require": {
-                "crell/serde": "*",
+                "crell/serde": "^1.5",
                 "php": ">=8.4",
                 "spriebsch/filesystem": "^1.0",
                 "spriebsch/timestamp": "^1.1",
                 "spriebsch/uuid": "^2.0"
             },
+            "bin": [
+                "bin/generate-topic-map.php"
+            ],
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -257,9 +260,9 @@
             "description": "The best way to work with Domain Events",
             "support": {
                 "issues": "https://github.com/spriebsch/domain-event/issues",
-                "source": "https://github.com/spriebsch/domain-event/tree/1.1.0"
+                "source": "https://github.com/spriebsch/domain-event/tree/1.3.5"
             },
-            "time": "2025-10-19T22:00:46+00:00"
+            "time": "2025-11-20T06:37:47+00:00"
         },
         {
             "name": "spriebsch/filesystem",

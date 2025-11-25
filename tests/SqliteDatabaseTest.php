@@ -7,7 +7,6 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use spriebsch\DomainEvent\CausationId;
-use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\DomainEvent\Envelope;
 use spriebsch\sqlite\SqliteConnection;
 
@@ -59,6 +58,27 @@ final class SqliteDatabaseTest extends TestCase
         $this->assertEquals($event, $events->asArray()[0]);
 
         $this->assertTrue($events->envelopes()[0]->causationId()->equals($causationId));
+    }
+
+    public function test_with_correlationId(): void
+    {
+        $correlationId = TestId::generate();
+        $connection = SqliteConnection::memory();
+        SqliteSequoraSchema::from($connection)->createIfNotExists();
+
+        $writer = SqliteDatabaseWriter::from($connection);
+        $reader = SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php');
+
+        $event = new TestEventWithCorrelationId($correlationId);
+
+        $writer->storeEnvelopes(Envelope::from($event));
+
+        $events = $reader->query(EventQuery::from());
+
+        $this->assertCount(1, $events);
+        $this->assertEquals($event, $events->asArray()[0]);
+
+        $this->assertTrue($events->envelopes()[0]->correlationId()->equals($correlationId));
     }
 
     public function test_exception_on_undefined_event_class(): void
