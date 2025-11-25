@@ -42,6 +42,11 @@ class Events implements IteratorAggregate, Countable
         return $this->envelopes[$key]->eventId();
     }
 
+    public function envelopes(): array
+    {
+        return $this->envelopes;
+    }
+
     public function asArray(): array
     {
         return array_map(

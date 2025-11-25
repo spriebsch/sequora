@@ -3,11 +3,19 @@
 namespace spriebsch\sequora;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use spriebsch\sqlite\SqliteConnection;
 
 #[CoversClass(SequoraWriter::class)]
 #[CoversClass(SequoraReader::class)]
+#[UsesClass(Events::class)]
+#[UsesClass(BinaryUUID::class)]
+#[UsesClass(EventQuery::class)]
+#[UsesClass(EventQuerySqliteSqlBuilder::class)]
+#[UsesClass(SqliteDatabaseReader::class)]
+#[UsesClass(SqliteDatabaseWriter::class)]
+#[UsesClass(SqliteSequoraSchema::class)]
 final class SequoraTest extends TestCase
 {
     public function test_read_all(): void
