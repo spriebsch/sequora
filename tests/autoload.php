@@ -7,11 +7,14 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'spriebsch\\sequora\\binaryuuidtest' => '/BinaryUUIDTest.php',
                 'spriebsch\\sequora\\eventquerymissingteststest' => '/EventQueryMissingTestsTest.php',
                 'spriebsch\\sequora\\eventquerysqlitesqlbuildertest' => '/EventQuerySqliteSqlBuilderTest.php',
                 'spriebsch\\sequora\\eventquerytest' => '/EventQueryTest.php',
+                'spriebsch\\sequora\\failedtostoreeventforunknownreasonexceptiontest' => '/FailedToStoreEventForUnknownReasonExceptionTest.php',
                 'spriebsch\\sequora\\sequoratest' => '/SequoraTest.php',
                 'spriebsch\\sequora\\sqlitedatabasetest' => '/SqliteDatabaseTest.php',
+                'spriebsch\\sequora\\sqlitedatabasewritertest' => '/SqliteDatabaseWriterTest.php',
                 'spriebsch\\sequora\\testevent' => '/doubles/TestEvent.php',
                 'spriebsch\\sequora\\testeventwithcorrelationid' => '/doubles/TestEventWithCorrelationId.php',
                 'spriebsch\\sequora\\testid' => '/doubles/TestId.php',
