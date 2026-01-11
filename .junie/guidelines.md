@@ -50,6 +50,19 @@ php-devbox phpstan
 to perform static code analysis with PHPStan.
 If errors occur, fix them. 
 
+# Code Coverage Analysis
+
+After each task, run
+
+```bash
+php-devbox composer code-coverage
+```
+
+to perform code coverage analysis with PHPUnit.
+Fix any errors related to missing @covers or @uses annotations.
+Add missing tests to achieve 100% code coverage.
+
+
 # Coding Guidelines
 
 ## Project Structure

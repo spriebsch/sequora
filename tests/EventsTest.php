@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use spriebsch\DomainEvent\Envelope;
 
 #[CoversClass(Events::class)]
+#[CoversClass(NoEventsException::class)]
 final class EventsTest extends TestCase
 {
     public function test_can_be_created_from_empty_input(): void

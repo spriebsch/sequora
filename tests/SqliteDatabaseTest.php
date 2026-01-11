@@ -9,6 +9,8 @@ use RuntimeException;
 use spriebsch\DomainEvent\CausationId;
 use spriebsch\DomainEvent\Envelope;
 use spriebsch\sqlite\SqliteConnection;
+use spriebsch\sqlite\Connection;
+use SQLite3Stmt;
 
 #[CoversClass(SqliteDatabaseWriter::class)]
 #[CoversClass(SqliteDatabaseReader::class)]
@@ -107,6 +109,22 @@ final class SqliteDatabaseTest extends TestCase
         $writer->storeEnvelopes(Envelope::from($event));
 
         $this->expectException(RuntimeException::class);
+
+        $reader->query(EventQuery::from());
+    }
+
+    public function test_throws_exception_when_query_execution_fails(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $statement = $this->createMock(SQLite3Stmt::class);
+
+        $connection->method('prepare')->willReturn($statement);
+        $statement->method('execute')->willReturn(false);
+
+        $reader = SqliteDatabaseReader::from($connection, []);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to execute SQLite query');
 
         $reader->query(EventQuery::from());
     }
