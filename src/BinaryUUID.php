@@ -20,7 +20,13 @@ final readonly class BinaryUUID
             throw new InvalidArgumentException('Binary UUID must be 16 bytes');
         }
 
-        $hex = unpack('H*', $binary)[1];
+        $unpacked = unpack('H*', $binary);
+        if ($unpacked === false) {
+            throw new InvalidArgumentException('Failed to unpack binary UUID');
+        }
+
+        /** @var string $hex */
+        $hex = $unpacked[1];
 
         return sprintf(
             '%s-%s-%s-%s-%s',

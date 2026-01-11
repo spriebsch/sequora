@@ -11,11 +11,17 @@ use spriebsch\uuid\UUID;
 
 final readonly class EventQuery
 {
+    /**
+     * @param array<string, mixed> $conditions
+     */
     public static function from(array $conditions = []): self
     {
         return new self($conditions);
     }
 
+    /**
+     * @param array<string, mixed> $conditions
+     */
     private function __construct(
         private array $conditions
     )
@@ -37,7 +43,10 @@ final readonly class EventQuery
     {
         if (isset($this->conditions['correlationIds'])) {
             $conditions = $this->conditions;
-            $conditions['correlationIds'][] = $correlationId;
+            /** @var array<UUID> $correlationIds */
+            $correlationIds = $conditions['correlationIds'];
+            $correlationIds[] = $correlationId;
+            $conditions['correlationIds'] = $correlationIds;
 
             return new self($conditions);
         }
@@ -52,6 +61,7 @@ final readonly class EventQuery
 
     public function withTopics(Topic ...$topics): self
     {
+        /** @var array<Topic> $currentTopics */
         $currentTopics = $this->conditions['topics'] ?? [];
 
         $topics = array_merge($currentTopics, $topics);
@@ -59,31 +69,55 @@ final readonly class EventQuery
         return new self(array_merge($this->conditions, ['topics' => $topics]));
     }
 
+    /**
+     * @return array<UUID>
+     */
     public function correlationIdValues(): array
     {
-        return $this->conditions['correlationIds'] ?? [];
+        /** @var array<UUID> $correlationIds */
+        $correlationIds = $this->conditions['correlationIds'] ?? [];
+
+        return $correlationIds;
     }
 
     public function causationIdValue(): ?CausationId
     {
-        return $this->conditions['causationId'] ?? null;
+        /** @var CausationId|null $causationId */
+        $causationId = $this->conditions['causationId'] ?? null;
+
+        return $causationId;
     }
 
+    /**
+     * @return array<Topic>
+     */
     public function topicsValue(): array
     {
-        return $this->conditions['topics'] ?? [];
+        /** @var array<Topic> $topics */
+        $topics = $this->conditions['topics'] ?? [];
+
+        return $topics;
     }
 
     public function afterValue(): ?EventId
     {
-        return $this->conditions['afterEventId'] ?? null;
+        /** @var EventId|null $afterEventId */
+        $afterEventId = $this->conditions['afterEventId'] ?? null;
+
+        return $afterEventId;
     }
 
     public function limitValue(): ?int
     {
-        return $this->conditions['limit'] ?? null;
+        /** @var int|null $limit */
+        $limit = $this->conditions['limit'] ?? null;
+
+        return $limit;
     }
 
+    /**
+     * @param array<string, mixed> $conditions
+     */
     private function ensureOnlyAllowedKeys(array $conditions): void
     {
         $allowedKeys = ['topics', 'afterEventId', 'correlationIds', 'causationId', 'limit'];

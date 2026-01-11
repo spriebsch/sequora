@@ -37,6 +37,9 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
     }
     */
 
+    /**
+     * @return array<string, array{0: SqliteConnection, 1: EventQuery, 2: string}>
+     */
     public static function provideQueries(): array
     {
         $connection = SqliteConnection::memory();

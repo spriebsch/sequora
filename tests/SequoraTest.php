@@ -26,7 +26,10 @@ final class SequoraTest extends TestCase
         $schema->createIfNotExists();
 
         $writer = SequoraWriter::from(SqliteDatabaseWriter::from($connection));
-        $reader = SequoraReader::from(SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php'));
+
+        /** @var array<string, string> $topicMap */
+        $topicMap = require __DIR__ . '/doubles/TopicMap.php';
+        $reader = SequoraReader::from(SqliteDatabaseReader::from($connection, $topicMap));
 
         $events = [
             new TestEvent('one'),
@@ -57,7 +60,10 @@ final class SequoraTest extends TestCase
         $schema->createIfNotExists();
 
         $writer = SequoraWriter::from(SqliteDatabaseWriter::from($connection));
-        $reader = SequoraReader::from(SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php'));
+
+        /** @var array<string, string> $topicMap */
+        $topicMap = require __DIR__ . '/doubles/TopicMap.php';
+        $reader = SequoraReader::from(SqliteDatabaseReader::from($connection, $topicMap));
 
         $events = [
             new TestEvent('one'),

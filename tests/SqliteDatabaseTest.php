@@ -25,7 +25,10 @@ final class SqliteDatabaseTest extends TestCase
         SqliteSequoraSchema::from($connection)->createIfNotExists();
 
         $writer = SqliteDatabaseWriter::from($connection);
-        $reader = SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php');
+
+        /** @var array<string, string> $topicMap */
+        $topicMap = require __DIR__ . '/doubles/TopicMap.php';
+        $reader = SqliteDatabaseReader::from($connection, $topicMap);
 
         $event1 = new TestEvent();
         $event2 = new TestEvent();
@@ -46,7 +49,10 @@ final class SqliteDatabaseTest extends TestCase
         SqliteSequoraSchema::from($connection)->createIfNotExists();
 
         $writer = SqliteDatabaseWriter::from($connection);
-        $reader = SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php');
+
+        /** @var array<string, string> $topicMap */
+        $topicMap = require __DIR__ . '/doubles/TopicMap.php';
+        $reader = SqliteDatabaseReader::from($connection, $topicMap);
 
         $event = new TestEvent();
 
@@ -57,7 +63,9 @@ final class SqliteDatabaseTest extends TestCase
         $this->assertCount(1, $events);
         $this->assertEquals($event, $events->asArray()[0]);
 
-        $this->assertTrue($events->envelopes()[0]->causationId()->equals($causationId));
+        $causationIdValue = $events->envelopes()[0]->causationId();
+        $this->assertNotNull($causationIdValue);
+        $this->assertTrue($causationIdValue->equals($causationId));
     }
 
     public function test_with_correlationId(): void
@@ -67,7 +75,10 @@ final class SqliteDatabaseTest extends TestCase
         SqliteSequoraSchema::from($connection)->createIfNotExists();
 
         $writer = SqliteDatabaseWriter::from($connection);
-        $reader = SqliteDatabaseReader::from($connection, require __DIR__ . '/doubles/TopicMap.php');
+
+        /** @var array<string, string> $topicMap */
+        $topicMap = require __DIR__ . '/doubles/TopicMap.php';
+        $reader = SqliteDatabaseReader::from($connection, $topicMap);
 
         $event = new TestEventWithCorrelationId($correlationId);
 
@@ -78,7 +89,9 @@ final class SqliteDatabaseTest extends TestCase
         $this->assertCount(1, $events);
         $this->assertEquals($event, $events->asArray()[0]);
 
-        $this->assertTrue($events->envelopes()[0]->correlationId()->equals($correlationId));
+        $correlationIdValue = $events->envelopes()[0]->correlationId();
+        $this->assertNotNull($correlationIdValue);
+        $this->assertTrue($correlationIdValue->equals($correlationId));
     }
 
     public function test_exception_on_undefined_event_class(): void

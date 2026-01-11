@@ -14,24 +14,33 @@ use const SQLITE3_ASSOC;
 
 final readonly class SqliteDatabaseReader implements DatabaseReader
 {
+    /**
+     * @param array<string, string> $topicMap
+     */
     public static function from(Connection $connection, array $topicMap): self
     {
         return new self($connection, $topicMap);
     }
 
+    /**
+     * @param array<string, string> $topicMap
+     */
     private function __construct(private Connection $connection, private array $topicMap) {}
 
     public function query(EventQuery $query): Events
     {
-        $statement = new EventQuerySqliteSqlBuilder()->build($query, $this->connection);
+        $statement = (new EventQuerySqliteSqlBuilder())->build($query, $this->connection);
 
         $queryResult = $statement->execute();
+        if ($queryResult === false) {
+            throw new RuntimeException('Failed to execute SQLite query');
+        }
 
         $events = [];
 
         while ($row = $queryResult->fetchArray(SQLITE3_ASSOC)) {
-
-            $topic = Topic::fromString($row['topic']);
+            /** @var array<string, string|int|null> $row */
+            $topic = Topic::fromString((string) ($row['topic'] ?? ''));
             $class = $this->topicMap[$topic->asString()] ?? null;
 
             if ($class === null) {
@@ -39,20 +48,20 @@ final readonly class SqliteDatabaseReader implements DatabaseReader
             }
 
             if ($row['causationId'] !== null) {
-                $causationId = CausationId::from(BinaryUUID::from($row['causationId']));
+                $causationId = CausationId::from(BinaryUUID::from((string) $row['causationId']));
             } else {
                 $causationId = null;
             }
 
             $events[] = Envelope::fromStorage(
-                EventId::from(BinaryUUID::from($row['eventId'])),
-                Timestamp::from($row['receivedAt']),
-                Timestamp::from($row['persistedAt']),
-                $row['event'],
-                $class,
+                EventId::from(BinaryUUID::from((string) ($row['eventId'] ?? ''))),
+                Timestamp::from((string) ($row['receivedAt'] ?? '')),
+                Timestamp::from((string) ($row['persistedAt'] ?? '')),
+                (string) ($row['event'] ?? ''),
+                (string) $class,
                 $topic,
                 $causationId,
-                SchemaVersion::from((int) $row['schemaVersion']),
+                SchemaVersion::from((int) ($row['schemaVersion'] ?? 0)),
             );
         }
 

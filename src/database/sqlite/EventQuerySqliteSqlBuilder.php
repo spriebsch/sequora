@@ -2,15 +2,12 @@
 
 namespace spriebsch\sequora;
 
-use spriebsch\sqlite\SqliteConnection;
+use spriebsch\sqlite\Connection;
 use SQLite3Stmt;
 
 final readonly class EventQuerySqliteSqlBuilder
 {
-    /**
-     * @return array{sql: string, params: array<string, mixed>}
-     */
-    public function build(EventQuery $query, SqliteConnection $connection): SQLite3Stmt
+    public function build(EventQuery $query, Connection $connection): SQLite3Stmt
     {
         $limit = '';
         $where = [];
@@ -33,7 +30,11 @@ final readonly class EventQuerySqliteSqlBuilder
         return $statement;
     }
 
-    private function addCorrelationIds(EventQuery $query, array $where, SqliteConnection $connection): array
+    /**
+     * @param string[] $where
+     * @return string[]
+     */
+    private function addCorrelationIds(EventQuery $query, array $where, Connection $connection): array
     {
         if (count($query->correlationIdValues()) === 0) {
             return $where;
@@ -53,7 +54,11 @@ final readonly class EventQuerySqliteSqlBuilder
         return $where;
     }
 
-    private function addCausationId(EventQuery $query, array $where, SqliteConnection $connection): array
+    /**
+     * @param string[] $where
+     * @return string[]
+     */
+    private function addCausationId(EventQuery $query, array $where, Connection $connection): array
     {
         if ($query->causationIdValue() === null) {
             return $where;
@@ -69,7 +74,11 @@ final readonly class EventQuerySqliteSqlBuilder
         return $where;
     }
 
-    private function addEventId(EventQuery $query, array $where, SqliteConnection $connection): array
+    /**
+     * @param string[] $where
+     * @return string[]
+     */
+    private function addEventId(EventQuery $query, array $where, Connection $connection): array
     {
         if ($query->afterValue() === null) {
             return $where;
@@ -85,7 +94,11 @@ final readonly class EventQuerySqliteSqlBuilder
         return $where;
     }
 
-    private function addTopic(EventQuery $query, array $where, SqliteConnection $connection): array
+    /**
+     * @param string[] $where
+     * @return string[]
+     */
+    private function addTopic(EventQuery $query, array $where, Connection $connection): array
     {
         $topics = [];
 
