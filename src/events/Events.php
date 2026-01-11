@@ -9,7 +9,10 @@ use IteratorAggregate;
 use spriebsch\DomainEvent\Envelope;
 use spriebsch\DomainEvent\EventId;
 
-class Events implements IteratorAggregate, Countable
+/**
+ * @implements IteratorAggregate<int, object>
+ */
+final readonly class Events implements IteratorAggregate, Countable
 {
     /**
      * @var Envelope[]
@@ -42,11 +45,17 @@ class Events implements IteratorAggregate, Countable
         return $this->envelopes[$key]->eventId();
     }
 
+    /**
+     * @return Envelope[]
+     */
     public function envelopes(): array
     {
         return $this->envelopes;
     }
 
+    /**
+     * @return object[]
+     */
     public function asArray(): array
     {
         return array_map(
