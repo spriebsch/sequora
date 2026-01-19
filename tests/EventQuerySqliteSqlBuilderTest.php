@@ -27,16 +27,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
 
         $this->assertSame($sql, $statement->getSQL());
     }
-
-    /*
-    public function test_some(): void
-    {
-        $uuid = UUIDv4::from('51523a51-1441-409b-8181-e444fe651127');
-        var_dump($uuid);
-        var_dump(BinaryUUID::toBinary($uuid));
-    }
-    */
-
+    
     /**
      * @return array<string, array{0: SqliteConnection, 1: EventQuery, 2: string}>
      */
