@@ -8,9 +8,10 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'spriebsch\\sequora\\binaryuuidtest' => '/BinaryUUIDTest.php',
-                'spriebsch\\sequora\\eventquerymissingteststest' => '/EventQueryMissingTestsTest.php',
                 'spriebsch\\sequora\\eventquerysqlitesqlbuildertest' => '/EventQuerySqliteSqlBuilderTest.php',
                 'spriebsch\\sequora\\eventquerytest' => '/EventQueryTest.php',
+                'spriebsch\\sequora\\eventreadertest' => '/EventReaderTest.php',
+                'spriebsch\\sequora\\eventstest' => '/EventsTest.php',
                 'spriebsch\\sequora\\failedtostoreeventforunknownreasonexceptiontest' => '/FailedToStoreEventForUnknownReasonExceptionTest.php',
                 'spriebsch\\sequora\\sequoratest' => '/SequoraTest.php',
                 'spriebsch\\sequora\\sqlitedatabasetest' => '/SqliteDatabaseTest.php',

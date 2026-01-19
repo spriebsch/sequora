@@ -2,6 +2,7 @@
 
 namespace spriebsch\sequora;
 
+use RuntimeException;
 use spriebsch\DomainEvent\CausationId;
 use spriebsch\DomainEvent\CorrelationId;
 use spriebsch\DomainEvent\EventId;
@@ -66,7 +67,7 @@ final readonly class EventQuery
 
         $topics = array_merge($currentTopics, $topics);
 
-        return new self(array_merge($this->conditions, ['topics' => $topics]));
+        return new self(array_merge($this->conditions, ['topics' => $this->makeUnique($topics)]));
     }
 
     /**
@@ -129,5 +130,22 @@ final readonly class EventQuery
             $list = implode(', ', $unknown);
             throw new InvalidArgumentException(sprintf('Unknown condition key(s): %s', $list));
         }
+    }
+
+    private function makeUnique(array $topics): array
+    {
+        $uniqueTopics = [];
+
+        foreach ($topics as $topic) {
+            foreach ($uniqueTopics as $uniqueTopic) {
+                if ($uniqueTopic->equals($topic)) {
+                    continue 2;
+                }
+            }
+
+            $uniqueTopics[] = $topic;
+        }
+
+        return $uniqueTopics;
     }
 }
