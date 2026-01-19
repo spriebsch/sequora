@@ -45,19 +45,19 @@ final class SqliteDatabaseWriter implements DatabaseWriter
         try {
             $statement = $this->prepareStatement();
 
-            $statement->bindValue(':eventId', BinaryUUID::toBinary($envelope->eventId()), SQLITE3_BLOB);
+            $statement->bindValue(':eventId', $envelope->eventId()->asString(), SQLITE3_TEXT);
             $statement->bindValue(':schemaVersion', $envelope->schemaVersion()->asInt(), SQLITE3_INTEGER);
 
             if ($envelope->correlationId() === null) {
                 $statement->bindValue(':correlationId', null, SQLITE3_NULL);
             } else {
-                $statement->bindValue(':correlationId', BinaryUUID::toBinary($envelope->correlationId()), SQLITE3_BLOB);
+                $statement->bindValue(':correlationId', $envelope->correlationId()->asString(), SQLITE3_TEXT);
             }
 
             if ($envelope->causationId() === null) {
                 $statement->bindValue(':causationId', null, SQLITE3_NULL);
             } else {
-                $statement->bindValue(':causationId', BinaryUUID::toBinary($envelope->causationId()), SQLITE3_BLOB);
+                $statement->bindValue(':causationId', $envelope->causationId()->asString(), SQLITE3_TEXT);
             }
 
             $statement->bindValue(':receivedAt', $envelope->receivedAt()->asString(), SQLITE3_TEXT);

@@ -10,6 +10,7 @@ spl_autoload_register(
                 'spriebsch\\sequora\\binaryuuid' => '/BinaryUUID.php',
                 'spriebsch\\sequora\\databasereader' => '/database/DatabaseReader.php',
                 'spriebsch\\sequora\\databasewriter' => '/database/DatabaseWriter.php',
+                'spriebsch\\sequora\\dumpeventstore' => '/DumpEventStore.php',
                 'spriebsch\\sequora\\eventquery' => '/EventQuery.php',
                 'spriebsch\\sequora\\eventquerysqlitesqlbuilder' => '/database/sqlite/EventQuerySqliteSqlBuilder.php',
                 'spriebsch\\sequora\\eventreader' => '/EventReader.php',

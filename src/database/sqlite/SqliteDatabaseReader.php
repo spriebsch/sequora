@@ -9,7 +9,10 @@ use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\SchemaVersion;
 use spriebsch\DomainEvent\Topic;
 use spriebsch\sqlite\Connection;
+use spriebsch\sqlite\SqliteConnection;
 use spriebsch\timestamp\Timestamp;
+use spriebsch\uuid\UUID;
+use spriebsch\uuid\UUIDv4;
 use const SQLITE3_ASSOC;
 
 final readonly class SqliteDatabaseReader implements DatabaseReader
@@ -48,13 +51,13 @@ final readonly class SqliteDatabaseReader implements DatabaseReader
             }
 
             if ($row['causationId'] !== null) {
-                $causationId = CausationId::from(BinaryUUID::from((string) $row['causationId']));
+                $causationId = CausationId::from((string) $row['causationId']);
             } else {
                 $causationId = null;
             }
 
             $events[] = Envelope::fromStorage(
-                EventId::from(BinaryUUID::from((string) ($row['eventId'] ?? ''))),
+                EventId::from((string) ($row['eventId'] ?? '')),
                 Timestamp::from((string) ($row['receivedAt'] ?? '')),
                 Timestamp::from((string) ($row['persistedAt'] ?? '')),
                 (string) ($row['event'] ?? ''),

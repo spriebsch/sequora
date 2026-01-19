@@ -43,7 +43,7 @@ final readonly class EventQuerySqliteSqlBuilder
         if (count($query->correlationIdValues()) === 1) {
             $where[] = sprintf(
                 "correlationId='%s'",
-                $connection->escapeString(BinaryUUID::toBinary($query->correlationIdValues()[0]))
+                $connection->escapeString($query->correlationIdValues()[0]->asString())
             );
 
             return $where;
@@ -52,7 +52,7 @@ final readonly class EventQuerySqliteSqlBuilder
         $values = [];
 
         foreach ($query->correlationIdValues() as $correlationId) {
-            $values[] = "'" . $connection->escapeString(BinaryUUID::toBinary($correlationId)) . "'";
+            $values[] = "'" . $connection->escapeString($correlationId->asString()) . "'";
         }
 
         $where[] = sprintf(
@@ -75,9 +75,7 @@ final readonly class EventQuerySqliteSqlBuilder
 
         $where[] = sprintf(
             'causationId=\'%s\'',
-            $connection->escapeString(
-                BinaryUUID::toBinary($query->causationIdValue())
-            )
+            $connection->escapeString($query->causationIdValue()->asString())
         );
 
         return $where;
@@ -95,9 +93,7 @@ final readonly class EventQuerySqliteSqlBuilder
 
         $where[] = sprintf(
             'id>(SELECT id FROM `sequora-events` WHERE eventId=\'%s\')',
-            $connection->escapeString(
-                BinaryUUID::toBinary($query->afterValue())
-            )
+            $connection->escapeString($query->afterValue()->asString())
         );
 
         return $where;

@@ -59,7 +59,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withCorrelationId($correlationId),
                 sprintf(
                     "SELECT * FROM `sequora-events` WHERE correlationId='%s' ORDER BY id ASC",
-                    $connection->escapeString(BinaryUUID::toBinary($correlationId))
+                    $correlationId->asString()
                 )
             ],
             'with two correlation IDs'             => [
@@ -69,8 +69,8 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withCorrelationId($correlationId2),
                 sprintf(
                     "SELECT * FROM `sequora-events` WHERE correlationId IN ('%s', '%s') ORDER BY id ASC",
-                    $connection->escapeString(BinaryUUID::toBinary($correlationId)),
-                    $connection->escapeString(BinaryUUID::toBinary($correlationId2))
+                    $correlationId->asString(),
+                    $correlationId2->asString()
                 )
             ],
             'with causation ID'                    => [
@@ -79,7 +79,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withCausationId($causationId),
                 sprintf(
                     "SELECT * FROM `sequora-events` WHERE causationId='%s' ORDER BY id ASC",
-                    $connection->escapeString(BinaryUUID::toBinary($causationId))
+                    $causationId->asString()
                 )
             ],
             'with causation ID and correlation ID' => [
@@ -89,8 +89,8 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withCorrelationId($correlationId),
                 sprintf(
                     "SELECT * FROM `sequora-events` WHERE correlationId='%s' AND causationId='%s' ORDER BY id ASC",
-                    $connection->escapeString(BinaryUUID::toBinary($correlationId)),
-                    $connection->escapeString(BinaryUUID::toBinary($causationId))
+                    $correlationId->asString(),
+                    $causationId->asString()
                 )
             ],
             'with causation ID and limit'          => [
@@ -100,7 +100,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->limit(10),
                 sprintf(
                     "SELECT * FROM `sequora-events` WHERE causationId='%s' ORDER BY id ASC LIMIT 10",
-                    $connection->escapeString(BinaryUUID::toBinary($causationId))
+                    $causationId->asString()
                 )
             ],
             'with topic'                           => [
@@ -129,7 +129,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withTopics($topic1),
                 sprintf(
                     "SELECT * FROM `sequora-events` WHERE correlationId='%s' AND topic='%s' ORDER BY id ASC",
-                    $connection->escapeString(BinaryUUID::toBinary($correlationId)),
+                    $correlationId->asString(),
                     $topic1->asString()
                 )
             ],
@@ -141,7 +141,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     "SELECT * FROM `sequora-events` WHERE id>(%s) ORDER BY id ASC",
                     sprintf(
                         "SELECT id FROM `sequora-events` WHERE eventId='%s'",
-                        $connection->escapeString(BinaryUUID::toBinary($eventId))
+                        $eventId->asString()
                     ),
                 )
             ],
@@ -154,7 +154,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     "SELECT * FROM `sequora-events` WHERE id>(%s) AND topic='%s' ORDER BY id ASC",
                     sprintf(
                         "SELECT id FROM `sequora-events` WHERE eventId='%s'",
-                        $connection->escapeString(BinaryUUID::toBinary($eventId))
+                        $eventId->asString()
                     ),
                     $topic1->asString()
                 )

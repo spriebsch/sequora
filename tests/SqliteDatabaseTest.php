@@ -8,8 +8,9 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use spriebsch\DomainEvent\CausationId;
 use spriebsch\DomainEvent\Envelope;
-use spriebsch\sqlite\SqliteConnection;
+use spriebsch\DomainEvent\Topic;
 use spriebsch\sqlite\Connection;
+use spriebsch\sqlite\SqliteConnection;
 use SQLite3Stmt;
 
 #[CoversClass(SqliteDatabaseWriter::class)]
@@ -70,6 +71,36 @@ final class SqliteDatabaseTest extends TestCase
         $this->assertTrue($causationIdValue->equals($causationId));
     }
 
+    public function test_with_topic(): void
+    {
+        $causationId = CausationId::generate();
+        $connection = SqliteConnection::memory();
+        SqliteSequoraSchema::from($connection)->createIfNotExists();
+
+        $writer = SqliteDatabaseWriter::from($connection);
+
+        /** @var array<string, string> $topicMap */
+        $topicMap = require __DIR__ . '/doubles/TopicMap.php';
+        $reader = SqliteDatabaseReader::from($connection, $topicMap);
+
+        $event = new TestEvent();
+
+        $writer->storeEnvelopes(Envelope::from($event, $causationId));
+        $writer->storeEnvelopes(Envelope::from(new TestEventWithCorrelationId(TestId::generate())));
+
+        $events = $reader->query(
+            EventQuery::from()->withTopics(Topic::fromString('spriebsch.sequora.test.event'))
+        );
+
+        $this->assertCount(1, $events);
+        $this->assertEquals($event, $events->asArray()[0]);
+
+        $causationIdValue = $events->envelopes()[0]->causationId();
+        $this->assertNotNull($causationIdValue);
+        $this->assertTrue($causationIdValue->equals($causationId));
+    }
+
+
     public function test_with_correlationId(): void
     {
         $correlationId = TestId::generate();
@@ -84,9 +115,10 @@ final class SqliteDatabaseTest extends TestCase
 
         $event = new TestEventWithCorrelationId($correlationId);
 
+        $writer->storeEnvelopes(Envelope::from(new TestEvent()));
         $writer->storeEnvelopes(Envelope::from($event));
 
-        $events = $reader->query(EventQuery::from());
+        $events = $reader->query(EventQuery::from()->withCorrelationId($correlationId));
 
         $this->assertCount(1, $events);
         $this->assertEquals($event, $events->asArray()[0]);
