@@ -115,8 +115,8 @@ final class SqliteDatabaseTest extends TestCase
 
     public function test_throws_exception_when_query_execution_fails(): void
     {
-        $connection = $this->createMock(Connection::class);
-        $statement = $this->createMock(SQLite3Stmt::class);
+        $connection = $this->createStub(Connection::class);
+        $statement = $this->createStub(SQLite3Stmt::class);
 
         $connection->method('prepare')->willReturn($statement);
         $statement->method('execute')->willReturn(false);

@@ -14,7 +14,7 @@ final class SqliteDatabaseWriterTest extends TestCase
 {
     public function test_exception_when_write_fails(): void
     {
-        $connection = $this->createMock(Connection::class);
+        $connection = $this->createStub(Connection::class);
         $connection->method('prepare')->willThrowException(new RuntimeException());
 
         $writer = SqliteDatabaseWriter::from($connection);
