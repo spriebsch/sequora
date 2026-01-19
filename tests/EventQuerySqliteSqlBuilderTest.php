@@ -45,20 +45,20 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
             'all'                                  => [
                 $connection,
                 EventQuery::from(),
-                'SELECT * FROM `sequora-events` ORDER BY id ASC',
+                "SELECT * FROM `sequora-events` ORDER BY id ASC",
             ],
             'all with limit'                       => [
                 $connection,
                 EventQuery::from()
                           ->limit(100),
-                'SELECT * FROM `sequora-events` ORDER BY id ASC LIMIT 100',
+                "SELECT * FROM `sequora-events` ORDER BY id ASC LIMIT 100",
             ],
             'with one correlation ID'              => [
                 $connection,
                 EventQuery::from()
                           ->withCorrelationId($correlationId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE correlationId=\'%s\' ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE correlationId='%s' ORDER BY id ASC",
                     $connection->escapeString(BinaryUUID::toBinary($correlationId))
                 )
             ],
@@ -68,7 +68,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withCorrelationId($correlationId)
                           ->withCorrelationId($correlationId2),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE correlationId IN (\'%s\', \'%s\') ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE correlationId IN ('%s', '%s') ORDER BY id ASC",
                     $connection->escapeString(BinaryUUID::toBinary($correlationId)),
                     $connection->escapeString(BinaryUUID::toBinary($correlationId2))
                 )
@@ -78,7 +78,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                 EventQuery::from()
                           ->withCausationId($causationId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE causationId=\'%s\' ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE causationId='%s' ORDER BY id ASC",
                     $connection->escapeString(BinaryUUID::toBinary($causationId))
                 )
             ],
@@ -99,7 +99,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withCausationId($causationId)
                           ->limit(10),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE causationId=\'%s\' ORDER BY id ASC LIMIT 10',
+                    "SELECT * FROM `sequora-events` WHERE causationId='%s' ORDER BY id ASC LIMIT 10",
                     $connection->escapeString(BinaryUUID::toBinary($causationId))
                 )
             ],
@@ -117,7 +117,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                 EventQuery::from()
                           ->withTopics($topic1, $topic2),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE topic IN (\'%s\',\'%s\') ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE topic IN ('%s','%s') ORDER BY id ASC",
                     $topic1->asString(),
                     $topic2->asString()
                 )
@@ -138,9 +138,9 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                 $connection,
                 EventQuery::from()->after($eventId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE id>(%s) ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE id>(%s) ORDER BY id ASC",
                     sprintf(
-                        'SELECT id FROM `sequora-events` WHERE eventId=\'%s\'',
+                        "SELECT id FROM `sequora-events` WHERE eventId='%s'",
                         $connection->escapeString(BinaryUUID::toBinary($eventId))
                     ),
                 )
@@ -151,9 +151,9 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                           ->withTopics($topic1)
                           ->after($eventId),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE id>(%s) AND topic IN (\'%s\') ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE id>(%s) AND topic='%s' ORDER BY id ASC",
                     sprintf(
-                        'SELECT id FROM `sequora-events` WHERE eventId=\'%s\'',
+                        "SELECT id FROM `sequora-events` WHERE eventId='%s'",
                         $connection->escapeString(BinaryUUID::toBinary($eventId))
                     ),
                     $topic1->asString()

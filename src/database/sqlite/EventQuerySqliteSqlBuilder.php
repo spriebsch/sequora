@@ -115,6 +115,12 @@ final readonly class EventQuerySqliteSqlBuilder
             return $where;
         }
 
+        if (count($query->topicsValue()) === 1) {
+            $where[] = sprintf("topic='%s'", $query->topicsValue()[0]->asString());
+
+            return $where;
+        }
+
         foreach ($query->topicsValue() as $topic) {
             $topics[] = "'" . $connection->escapeString($topic->asString()) . "'";
         }
