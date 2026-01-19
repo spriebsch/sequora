@@ -27,7 +27,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
 
         $this->assertSame($sql, $statement->getSQL());
     }
-    
+
     /**
      * @return array<string, array{0: SqliteConnection, 1: EventQuery, 2: string}>
      */
@@ -42,18 +42,18 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
         $topic2 = Topic::fromString('the-vendor.the-domain.the-context.the-name-2');
 
         return [
-            'all'                       => [
+            'all'                                  => [
                 $connection,
                 EventQuery::from(),
                 'SELECT * FROM `sequora-events` ORDER BY id ASC',
             ],
-            'all with limit'            => [
+            'all with limit'                       => [
                 $connection,
                 EventQuery::from()
                           ->limit(100),
                 'SELECT * FROM `sequora-events` ORDER BY id ASC LIMIT 100',
             ],
-            'with one correlation ID'   => [
+            'with one correlation ID'              => [
                 $connection,
                 EventQuery::from()
                           ->withCorrelationId($correlationId),
@@ -62,7 +62,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     $connection->escapeString(BinaryUUID::toBinary($correlationId))
                 )
             ],
-            'with two correlation IDs'  => [
+            'with two correlation IDs'             => [
                 $connection,
                 EventQuery::from()
                           ->withCorrelationId($correlationId)
@@ -73,7 +73,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     $connection->escapeString(BinaryUUID::toBinary($correlationId2))
                 )
             ],
-            'with causation ID'         => [
+            'with causation ID'                    => [
                 $connection,
                 EventQuery::from()
                           ->withCausationId($causationId),
@@ -82,16 +82,37 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     $connection->escapeString(BinaryUUID::toBinary($causationId))
                 )
             ],
-            'with topic'                => [
+            'with causation ID and correlation ID' => [
+                $connection,
+                EventQuery::from()
+                          ->withCausationId($causationId)
+                          ->withCorrelationId($correlationId),
+                sprintf(
+                    "SELECT * FROM `sequora-events` WHERE correlationId='%s' AND causationId='%s' ORDER BY id ASC",
+                    $connection->escapeString(BinaryUUID::toBinary($correlationId)),
+                    $connection->escapeString(BinaryUUID::toBinary($causationId))
+                )
+            ],
+            'with causation ID and limit'          => [
+                $connection,
+                EventQuery::from()
+                          ->withCausationId($causationId)
+                          ->limit(10),
+                sprintf(
+                    'SELECT * FROM `sequora-events` WHERE causationId=\'%s\' ORDER BY id ASC LIMIT 10',
+                    $connection->escapeString(BinaryUUID::toBinary($causationId))
+                )
+            ],
+            'with topic'                           => [
                 $connection,
                 EventQuery::from()
                           ->withTopics($topic1),
                 sprintf(
-                    'SELECT * FROM `sequora-events` WHERE topic IN (\'%s\') ORDER BY id ASC',
+                    "SELECT * FROM `sequora-events` WHERE topic='%s' ORDER BY id ASC",
                     $topic1->asString()
                 )
             ],
-            'with topics'               => [
+            'with topics'                          => [
                 $connection,
                 EventQuery::from()
                           ->withTopics($topic1, $topic2),
@@ -101,6 +122,18 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
                     $topic2->asString()
                 )
             ],
+            'with correlation ID and topic'        => [
+                $connection,
+                EventQuery::from()
+                          ->withCorrelationId($correlationId)
+                          ->withTopics($topic1),
+                sprintf(
+                    "SELECT * FROM `sequora-events` WHERE correlationId='%s' AND topic='%s' ORDER BY id ASC",
+                    $connection->escapeString(BinaryUUID::toBinary($correlationId)),
+                    $topic1->asString()
+                )
+            ],
+
             'after event ID'            => [
                 $connection,
                 EventQuery::from()->after($eventId),
