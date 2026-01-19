@@ -40,6 +40,15 @@ final readonly class EventQuerySqliteSqlBuilder
             return $where;
         }
 
+        if (count($query->correlationIdValues()) === 1) {
+            $where[] = sprintf(
+                "correlationId='%s'",
+                $connection->escapeString(BinaryUUID::toBinary($query->correlationIdValues()[0]))
+            );
+
+            return $where;
+        }
+
         $values = [];
 
         foreach ($query->correlationIdValues() as $correlationId) {

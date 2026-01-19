@@ -30,9 +30,8 @@ final class BinaryUUIDTest extends TestCase
         $uuid = UUIDv4::from('51523a51-1441-409b-8181-e444fe651127');
 
         $binary = BinaryUUID::toBinary($uuid);
-        $roundTrip = BinaryUUID::from($binary);
 
-        $this->assertSame($uuid->asString(), $roundTrip);
+        $this->assertSame($uuid->asString(), UUIDv4::from(BinaryUUID::from($binary))->asString());
     }
 
     public function test_from_throws_exception_when_binary_length_is_not_16_bytes(): void
