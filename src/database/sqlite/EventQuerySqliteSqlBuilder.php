@@ -9,7 +9,6 @@ final readonly class EventQuerySqliteSqlBuilder
 {
     public function build(EventQuery $query, Connection $connection): SQLite3Stmt
     {
-        $limit = '';
         $where = [];
 
         $where = $this->addCorrelationIds($query, $where, $connection);
@@ -23,6 +22,7 @@ final readonly class EventQuerySqliteSqlBuilder
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
+        $sql .= $this->orderBySequenceNumber();
         $sql .= $this->limit($query);
 
         $statement = $connection->prepare($sql);
@@ -107,12 +107,17 @@ final readonly class EventQuerySqliteSqlBuilder
         }
 
         foreach ($query->topicsValue() as $topic) {
-            $topics[] = '\'' . $connection->escapeString($topic->asString()) . '\'';
+            $topics[] = "'" . $connection->escapeString($topic->asString()) . "'";
         }
 
-        $where[] = 'topic IN (' . implode(',', $topics) . ')';
+        $where[] = sprintf('topic IN (%s)', implode(',', $topics));
 
         return $where;
+    }
+
+    private function orderBySequenceNumber(): string
+    {
+        return ' ORDER BY id ASC';
     }
 
     private function limit(EventQuery $query): string
