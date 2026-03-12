@@ -21,7 +21,7 @@ use spriebsch\sqlite\SqliteConnection;
 final class EventReaderTest extends TestCase
 {
     /**
-     * @param callable(array<spriebsch\DomainEvent\Envelope>): EventQuery $thing
+     * @param callable(array<\spriebsch\DomainEvent\Envelope>): EventQuery $thing
      */
     #[DataProvider('provideQueries')]
     public function test_queries(callable $thing, int $numberOfEvents): void
@@ -55,7 +55,7 @@ final class EventReaderTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: callable(array<spriebsch\DomainEvent\Envelope>): EventQuery, 1: int}>
+     * @return array<string, array{0: callable(array<\spriebsch\DomainEvent\Envelope>): EventQuery, 1: int}>
      */
     public static function provideQueries(): array
     {
