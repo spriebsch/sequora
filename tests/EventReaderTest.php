@@ -12,7 +12,6 @@ use spriebsch\sqlite\SqliteConnection;
 #[CoversClass(SequoraReader::class)]
 #[UsesClass(SequoraWriter::class)]
 #[UsesClass(Events::class)]
-#[UsesClass(BinaryUUID::class)]
 #[UsesClass(EventQuery::class)]
 #[UsesClass(EventQuerySqliteSqlBuilder::class)]
 #[UsesClass(SqliteDatabaseReader::class)]

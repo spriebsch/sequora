@@ -15,7 +15,6 @@ use SQLite3Stmt;
 
 #[CoversClass(SqliteDatabaseWriter::class)]
 #[CoversClass(SqliteDatabaseReader::class)]
-#[UsesClass(BinaryUUID::class)]
 #[UsesClass(EventQuery::class)]
 #[UsesClass(EventQuerySqliteSqlBuilder::class)]
 #[UsesClass(Events::class)]

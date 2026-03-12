@@ -14,7 +14,6 @@ use spriebsch\sqlite\SqliteConnection;
 
 #[CoversClass(EventQuerySqliteSqlBuilder::class)]
 #[UsesClass(EventQuery::class)]
-#[UsesClass(BinaryUUID::class)]
 #[UsesClass(SqliteSequoraSchema::class)]
 final class EventQuerySqliteSqlBuilderTest extends TestCase
 {
@@ -34,7 +33,7 @@ final class EventQuerySqliteSqlBuilderTest extends TestCase
     public static function provideQueries(): array
     {
         $connection = SqliteConnection::memory();
-        $eventId = EventId::from('51523a51-1441-409b-8181-e444fe651127'); // binary string contains '
+        $eventId = EventId::from('51523a51-1441-409b-8181-e444fe651127');
         $correlationId = CorrelationId::generate();
         $correlationId2 = CorrelationId::generate();
         $causationId = CausationId::generate();

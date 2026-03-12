@@ -7,7 +7,6 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\sequora\\binaryuuidtest' => '/BinaryUUIDTest.php',
                 'spriebsch\\sequora\\eventquerysqlitesqlbuildertest' => '/EventQuerySqliteSqlBuilderTest.php',
                 'spriebsch\\sequora\\eventquerytest' => '/EventQueryTest.php',
                 'spriebsch\\sequora\\eventreadertest' => '/EventReaderTest.php',
