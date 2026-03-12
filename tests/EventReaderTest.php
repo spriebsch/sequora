@@ -20,8 +20,11 @@ use spriebsch\sqlite\SqliteConnection;
 #[UsesClass(SqliteSequoraSchema::class)]
 final class EventReaderTest extends TestCase
 {
+    /**
+     * @param callable(array<spriebsch\DomainEvent\Envelope>): EventQuery $thing
+     */
     #[DataProvider('provideQueries')]
-    public function test_queries($thing, int $numberOfEvents): void
+    public function test_queries(callable $thing, int $numberOfEvents): void
     {
         $connection = SqliteConnection::memory();
 
@@ -51,6 +54,9 @@ final class EventReaderTest extends TestCase
         $this->assertCount($numberOfEvents, $result);
     }
 
+    /**
+     * @return array<string, array{0: callable(array<spriebsch\DomainEvent\Envelope>): EventQuery, 1: int}>
+     */
     public static function provideQueries(): array
     {
         return [

@@ -132,8 +132,13 @@ final readonly class EventQuery
         }
     }
 
+    /**
+     * @param Topic[] $topics
+     * @return Topic[]
+     */
     private function makeUnique(array $topics): array
     {
+        /** @var Topic[] $uniqueTopics */
         $uniqueTopics = [];
 
         foreach ($topics as $topic) {

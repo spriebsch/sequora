@@ -25,10 +25,11 @@ class DumpEventStore
             }
 
             while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                /** @var array<string, string|int|float|null> $row */
                 $rows[] = $row;
                 foreach ($headers as $index => $header) {
-                    $value = $row[$header] ?? '';
-                    $maxLengths[$index] = max($maxLengths[$index], strlen((string) $value));
+                    $value = (string) ($row[$header] ?? '');
+                    $maxLengths[$index] = max($maxLengths[$index], strlen($value));
                 }
             }
         }
@@ -44,10 +45,11 @@ class DumpEventStore
         print '+' . implode('+', array_map(fn($len) => str_repeat('-', $len + 2), $maxLengths)) . '+' . PHP_EOL;
 
         foreach ($rows as $row) {
+            /** @var array<string, string|int|float|null> $row */
             print '|';
             foreach ($headers as $i => $header) {
-                $value = $row[$header] ?? '';
-                printf(" %-*s |", $maxLengths[$i], substr((string) $value, 0, $maxLengths[$i]));
+                $value = (string) ($row[$header] ?? '');
+                printf(" %-*s |", $maxLengths[$i], substr($value, 0, $maxLengths[$i]));
             }
             print PHP_EOL;
         }
