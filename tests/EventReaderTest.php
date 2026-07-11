@@ -13,6 +13,7 @@ use spriebsch\sqlite\SqliteConnection;
 #[UsesClass(SequoraWriter::class)]
 #[UsesClass(Events::class)]
 #[UsesClass(EventQuery::class)]
+#[UsesClass(EventQueryCriteria::class)]
 #[UsesClass(EventQuerySqliteSqlBuilder::class)]
 #[UsesClass(SqliteDatabaseReader::class)]
 #[UsesClass(SqliteDatabaseWriter::class)]

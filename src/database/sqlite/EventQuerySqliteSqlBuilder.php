@@ -9,12 +9,13 @@ final readonly class EventQuerySqliteSqlBuilder
 {
     public function build(EventQuery $query, Connection $connection): SQLite3Stmt
     {
+        $criteria = $query->criteria();
         $where = [];
 
-        $where = $this->addCorrelationIds($query, $where, $connection);
-        $where = $this->addCausationId($query, $where, $connection);
-        $where = $this->addEventId($query, $where, $connection);
-        $where = $this->addTopic($query, $where, $connection);
+        $where = $this->addCorrelationIds($criteria, $where, $connection);
+        $where = $this->addCausationId($criteria, $where, $connection);
+        $where = $this->addEventId($criteria, $where, $connection);
+        $where = $this->addTopic($criteria, $where, $connection);
 
         $sql = 'SELECT * FROM `sequora-events`';
 
@@ -23,7 +24,7 @@ final readonly class EventQuerySqliteSqlBuilder
         }
 
         $sql .= $this->orderBySequenceNumber();
-        $sql .= $this->limit($query);
+        $sql .= $this->limit($criteria);
 
         $statement = $connection->prepare($sql);
 
@@ -34,16 +35,16 @@ final readonly class EventQuerySqliteSqlBuilder
      * @param string[] $where
      * @return string[]
      */
-    private function addCorrelationIds(EventQuery $query, array $where, Connection $connection): array
+    private function addCorrelationIds(EventQueryCriteria $criteria, array $where, Connection $connection): array
     {
-        if (count($query->correlationIdValues()) === 0) {
+        if (count($criteria->correlationIds()) === 0) {
             return $where;
         }
 
-        if (count($query->correlationIdValues()) === 1) {
+        if (count($criteria->correlationIds()) === 1) {
             $where[] = sprintf(
                 "correlationId='%s'",
-                $connection->escapeString($query->correlationIdValues()[0]->asString())
+                $connection->escapeString($criteria->correlationIds()[0]->asString())
             );
 
             return $where;
@@ -51,7 +52,7 @@ final readonly class EventQuerySqliteSqlBuilder
 
         $values = [];
 
-        foreach ($query->correlationIdValues() as $correlationId) {
+        foreach ($criteria->correlationIds() as $correlationId) {
             $values[] = "'" . $connection->escapeString($correlationId->asString()) . "'";
         }
 
@@ -67,15 +68,15 @@ final readonly class EventQuerySqliteSqlBuilder
      * @param string[] $where
      * @return string[]
      */
-    private function addCausationId(EventQuery $query, array $where, Connection $connection): array
+    private function addCausationId(EventQueryCriteria $criteria, array $where, Connection $connection): array
     {
-        if ($query->causationIdValue() === null) {
+        if ($criteria->causationId() === null) {
             return $where;
         }
 
         $where[] = sprintf(
             'causationId=\'%s\'',
-            $connection->escapeString($query->causationIdValue()->asString())
+            $connection->escapeString($criteria->causationId()->asString())
         );
 
         return $where;
@@ -85,15 +86,15 @@ final readonly class EventQuerySqliteSqlBuilder
      * @param string[] $where
      * @return string[]
      */
-    private function addEventId(EventQuery $query, array $where, Connection $connection): array
+    private function addEventId(EventQueryCriteria $criteria, array $where, Connection $connection): array
     {
-        if ($query->afterValue() === null) {
+        if ($criteria->afterEventId() === null) {
             return $where;
         }
 
         $where[] = sprintf(
             'id>(SELECT id FROM `sequora-events` WHERE eventId=\'%s\')',
-            $connection->escapeString($query->afterValue()->asString())
+            $connection->escapeString($criteria->afterEventId()->asString())
         );
 
         return $where;
@@ -103,21 +104,21 @@ final readonly class EventQuerySqliteSqlBuilder
      * @param string[] $where
      * @return string[]
      */
-    private function addTopic(EventQuery $query, array $where, Connection $connection): array
+    private function addTopic(EventQueryCriteria $criteria, array $where, Connection $connection): array
     {
         $topics = [];
 
-        if (count($query->topicsValue()) === 0) {
+        if (count($criteria->topics()) === 0) {
             return $where;
         }
 
-        if (count($query->topicsValue()) === 1) {
-            $where[] = sprintf("topic='%s'", $query->topicsValue()[0]->asString());
+        if (count($criteria->topics()) === 1) {
+            $where[] = sprintf("topic='%s'", $criteria->topics()[0]->asString());
 
             return $where;
         }
 
-        foreach ($query->topicsValue() as $topic) {
+        foreach ($criteria->topics() as $topic) {
             $topics[] = "'" . $connection->escapeString($topic->asString()) . "'";
         }
 
@@ -131,12 +132,12 @@ final readonly class EventQuerySqliteSqlBuilder
         return ' ORDER BY id ASC';
     }
 
-    private function limit(EventQuery $query): string
+    private function limit(EventQueryCriteria $criteria): string
     {
-        if ($query->limitValue() === null) {
+        if ($criteria->limit() === null) {
             return '';
         }
 
-        return ' LIMIT ' . $query->limitValue();
+        return ' LIMIT ' . $criteria->limit();
     }
 }

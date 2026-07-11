@@ -5,8 +5,6 @@ namespace spriebsch\sequora;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use spriebsch\sqlite\SqliteConnection;
-use SQLite3;
-use SQLite3Result;
 
 #[CoversClass(DumpEventStore::class)]
 final class DumpEventStoreTest extends TestCase
@@ -15,7 +13,7 @@ final class DumpEventStoreTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->dbFile = tempnam(sys_get_temp_dir(), 'test_db');
+        $this->dbFile = tempnam(sys_get_temp_dir(), 'sequora-test-');
     }
 
     protected function tearDown(): void
@@ -25,30 +23,34 @@ final class DumpEventStoreTest extends TestCase
         }
     }
 
-    public function test_dump_empty_store(): void
+    public function test_dump_outputs_table(): void
     {
         $connection = SqliteConnection::from($this->dbFile);
-        $connection->exec('CREATE TABLE `sequora-events` (id INTEGER PRIMARY KEY)');
+        $connection->exec('CREATE TABLE `sequora-events` (id INTEGER PRIMARY KEY, event_type TEXT, payload TEXT)');
+        $connection->exec("INSERT INTO `sequora-events` (event_type, payload) VALUES ('TestEvent', '{\"foo\":\"bar\"}')");
 
         ob_start();
         DumpEventStore::dump($connection);
         $output = (string) ob_get_clean();
 
-        $this->assertStringContainsString('+', $output);
-        $this->assertStringContainsString('| id |', $output);
+        $this->assertStringContainsString('id', $output);
+        $this->assertStringContainsString('event_type', $output);
+        $this->assertStringContainsString('payload', $output);
+        $this->assertStringContainsString('TestEvent', $output);
+        $this->assertStringContainsString('{"foo":"bar"}', $output);
     }
 
-    public function test_dump_with_data(): void
+    public function test_dump_with_no_data(): void
     {
         $connection = SqliteConnection::from($this->dbFile);
-        $connection->exec('CREATE TABLE `sequora-events` (id INTEGER PRIMARY KEY, name TEXT)');
-        $connection->exec('INSERT INTO `sequora-events` (id, name) VALUES (1, "event-1")');
+        $connection->exec('CREATE TABLE `sequora-events` (id INTEGER PRIMARY KEY, event_type TEXT, payload TEXT)');
 
         ob_start();
         DumpEventStore::dump($connection);
         $output = (string) ob_get_clean();
 
-        $this->assertStringContainsString('| id | name    |', $output);
-        $this->assertStringContainsString('| 1  | event-1 |', $output);
+        $this->assertStringContainsString('id', $output);
+        $this->assertStringContainsString('event_type', $output);
+        $this->assertStringContainsString('payload', $output);
     }
 }

@@ -16,6 +16,7 @@ use SQLite3Stmt;
 #[CoversClass(SqliteDatabaseWriter::class)]
 #[CoversClass(SqliteDatabaseReader::class)]
 #[UsesClass(EventQuery::class)]
+#[UsesClass(EventQueryCriteria::class)]
 #[UsesClass(EventQuerySqliteSqlBuilder::class)]
 #[UsesClass(Events::class)]
 #[UsesClass(SqliteSequoraSchema::class)]

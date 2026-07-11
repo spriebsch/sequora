@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+use spriebsch\sequora\DumpEventStore;
+use spriebsch\sqlite\SqliteConnection;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+if ($argc < 2) {
+    echo 'Usage: sequora-dump <path-to-sqlite-db>' . PHP_EOL;
+    exit(1);
+}
+
+$dbPath = $argv[1];
+
+if (!file_exists($dbPath)) {
+    echo sprintf('Database file "%s" not found.' . PHP_EOL, $dbPath);
+    exit(1);
+}
+
+$connection = SqliteConnection::from($dbPath);
+DumpEventStore::dump($connection);

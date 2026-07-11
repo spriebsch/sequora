@@ -70,52 +70,30 @@ final readonly class EventQuery
         return new self(array_merge($this->conditions, ['topics' => $this->makeUnique($topics)]));
     }
 
-    /**
-     * @return array<UUID>
-     */
-    public function correlationIdValues(): array
+    public function criteria(): EventQueryCriteria
     {
-        /** @var array<UUID> $correlationIds */
-        $correlationIds = $this->conditions['correlationIds'] ?? [];
-
-        return $correlationIds;
-    }
-
-    // @todo die api zum abruf ist irgendwie künstlich hässlich und wir haben ein setter vs. getter problem. wie wäre es mit einem immutable vo mit einem hässlichen konstruktor, der von diesem objekt gebaut wird und dann nur getter hat?
-
-    public function causationIdValue(): ?CausationId
-    {
-        /** @var CausationId|null $causationId */
-        $causationId = $this->conditions['causationId'] ?? null;
-
-        return $causationId;
-    }
-
-    /**
-     * @return array<Topic>
-     */
-    public function topicsValue(): array
-    {
-        /** @var array<Topic> $topics */
+        /** @var Topic[] $topics */
         $topics = $this->conditions['topics'] ?? [];
 
-        return $topics;
-    }
-
-    public function afterValue(): ?EventId
-    {
         /** @var EventId|null $afterEventId */
         $afterEventId = $this->conditions['afterEventId'] ?? null;
 
-        return $afterEventId;
-    }
+        /** @var UUID[] $correlationIds */
+        $correlationIds = $this->conditions['correlationIds'] ?? [];
 
-    public function limitValue(): ?int
-    {
+        /** @var CausationId|null $causationId */
+        $causationId = $this->conditions['causationId'] ?? null;
+
         /** @var int|null $limit */
         $limit = $this->conditions['limit'] ?? null;
 
-        return $limit;
+        return new EventQueryCriteria(
+            $topics,
+            $afterEventId,
+            $correlationIds,
+            $causationId,
+            $limit
+        );
     }
 
     /**

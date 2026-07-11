@@ -10,6 +10,7 @@ use spriebsch\DomainEvent\EventId;
 use spriebsch\DomainEvent\Topic;
 
 #[CoversClass(EventQuery::class)]
+#[CoversClass(EventQueryCriteria::class)]
 #[CoversClass(EventQuerySqliteSqlBuilder::class)]
 final class EventQueryTest extends TestCase
 {
@@ -20,7 +21,7 @@ final class EventQueryTest extends TestCase
 
         $query = $query->limit($limit);
 
-        $this->assertEquals($limit, $query->limitValue());
+        $this->assertEquals($limit, $query->criteria()->limit());
     }
 
     public function test_one_topic(): void
@@ -30,7 +31,7 @@ final class EventQueryTest extends TestCase
 
         $query = $query->withTopics($topic);
 
-        $this->assertEquals([$topic], $query->topicsValue());
+        $this->assertEquals([$topic], $query->criteria()->topics());
     }
 
     public function test_append_topics(): void
@@ -42,7 +43,7 @@ final class EventQueryTest extends TestCase
         $query = $query->withTopics($topic1);
         $query = $query->withTopics($topic2);
 
-        $this->assertEquals([$topic1, $topic2], $query->topicsValue());
+        $this->assertEquals([$topic1, $topic2], $query->criteria()->topics());
     }
 
     public function test_append_topics_is_idempotent(): void
@@ -55,7 +56,7 @@ final class EventQueryTest extends TestCase
         $query = $query->withTopics($topic2);
         $query = $query->withTopics($topic2);
 
-        $this->assertEquals([$topic1, $topic2], $query->topicsValue());
+        $this->assertEquals([$topic1, $topic2], $query->criteria()->topics());
     }
 
     public function test_one_correlation_id(): void
@@ -65,7 +66,7 @@ final class EventQueryTest extends TestCase
 
         $query = $query->withCorrelationId($correlationId);
 
-        $this->assertEquals([$correlationId], $query->correlationIdValues());
+        $this->assertEquals([$correlationId], $query->criteria()->correlationIds());
     }
 
     public function test_multiple_correlation_ids(): void
@@ -76,7 +77,7 @@ final class EventQueryTest extends TestCase
 
         $query = $query->withCorrelationId($correlationId1)->withCorrelationId($correlationId2);
 
-        $this->assertEquals([$correlationId1, $correlationId2], $query->correlationIdValues());
+        $this->assertEquals([$correlationId1, $correlationId2], $query->criteria()->correlationIds());
     }
 
     public function test_with_causation_id(): void
@@ -86,7 +87,7 @@ final class EventQueryTest extends TestCase
 
         $query = $query->withCausationId($causationId);
 
-        $this->assertEquals($causationId, $query->causationIdValue());
+        $this->assertEquals($causationId, $query->criteria()->causationId());
     }
 
     public function test_after_eventId(): void
@@ -95,8 +96,8 @@ final class EventQueryTest extends TestCase
 
         $query = EventQuery::from()->after($eventId);
 
-        $this->assertNotNull($query->afterValue());
-        $this->assertTrue($eventId->equals($query->afterValue()));
+        $this->assertNotNull($query->criteria()->afterEventId());
+        $this->assertTrue($eventId->equals($query->criteria()->afterEventId()));
     }
 
     public function test_from_rejects_unknown_condition_keys(): void

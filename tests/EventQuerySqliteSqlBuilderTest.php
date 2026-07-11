@@ -14,6 +14,7 @@ use spriebsch\sqlite\SqliteConnection;
 
 #[CoversClass(EventQuerySqliteSqlBuilder::class)]
 #[UsesClass(EventQuery::class)]
+#[UsesClass(EventQueryCriteria::class)]
 #[UsesClass(SqliteSequoraSchema::class)]
 final class EventQuerySqliteSqlBuilderTest extends TestCase
 {

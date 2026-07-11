@@ -15,6 +15,10 @@
     ]
   },
   "scripts": {
-    "clean": "rm -rf build"
-  }
+    "clean": "rm -rf build",
+    "code-coverage": "phpunit --coverage-text"
+  },
+  "bin": [
+    "bin/sequora-dump"
+  ]
 }
