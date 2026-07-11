@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27f80262e3faa8f8cbd498cbd68da88c",
+    "content-hash": "11a261d18278c473af00461d83b26b49",
     "packages": [
         {
             "name": "crell/attributeutils",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Crell/AttributeUtils.git",
-                "reference": "b89ad9cf419fa5ae3cd81880af15d0ba4a98aa8c"
+                "reference": "309acffe4f6d3768eb6921ef96091b16c84b524b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Crell/AttributeUtils/zipball/b89ad9cf419fa5ae3cd81880af15d0ba4a98aa8c",
-                "reference": "b89ad9cf419fa5ae3cd81880af15d0ba4a98aa8c",
+                "url": "https://api.github.com/repos/Crell/AttributeUtils/zipball/309acffe4f6d3768eb6921ef96091b16c84b524b",
+                "reference": "309acffe4f6d3768eb6921ef96091b16c84b524b",
                 "shasum": ""
             },
             "require": {
@@ -65,7 +65,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Crell/AttributeUtils/issues",
-                "source": "https://github.com/Crell/AttributeUtils/tree/1.3.0"
+                "source": "https://github.com/Crell/AttributeUtils/tree/1.3.1"
             },
             "funding": [
                 {
@@ -73,7 +73,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-14T16:51:30+00:00"
+            "time": "2026-06-07T13:59:04+00:00"
         },
         {
             "name": "crell/fp",
@@ -147,20 +147,20 @@
         },
         {
             "name": "crell/serde",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Crell/Serde.git",
-                "reference": "aefce5d7030d6ea76f86b67f029c35fcd1774ad0"
+                "reference": "677e11017f715c8f74a61f436ee596a73858ed68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Crell/Serde/zipball/aefce5d7030d6ea76f86b67f029c35fcd1774ad0",
-                "reference": "aefce5d7030d6ea76f86b67f029c35fcd1774ad0",
+                "url": "https://api.github.com/repos/Crell/Serde/zipball/677e11017f715c8f74a61f436ee596a73858ed68",
+                "reference": "677e11017f715c8f74a61f436ee596a73858ed68",
                 "shasum": ""
             },
             "require": {
-                "crell/attributeutils": "~1.3",
+                "crell/attributeutils": "~1.3.1",
                 "crell/fp": "~1.0",
                 "php": "~8.2"
             },
@@ -168,7 +168,7 @@
                 "devium/toml": "^1.0.5",
                 "phpbench/phpbench": "^1.3.0",
                 "phpstan/phpstan": "^2.1.17",
-                "phpunit/phpunit": "~10.5",
+                "phpunit/phpunit": "^10.5.60",
                 "symfony/yaml": "^5.4"
             },
             "suggest": {
@@ -206,7 +206,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Crell/Serde/issues",
-                "source": "https://github.com/Crell/Serde/tree/1.5.0"
+                "source": "https://github.com/Crell/Serde/tree/1.6.0"
             },
             "funding": [
                 {
@@ -214,25 +214,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-15T15:56:00+00:00"
+            "time": "2026-06-23T15:59:17+00:00"
         },
         {
             "name": "spriebsch/domain-event",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/domain-event.git",
-                "reference": "5cb2cef241c61449e6a7ab280241ad50a612fc32"
+                "reference": "fca17ddfcd60ac1625b7482cf523f93f2d80cd7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/5cb2cef241c61449e6a7ab280241ad50a612fc32",
-                "reference": "5cb2cef241c61449e6a7ab280241ad50a612fc32",
+                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/fca17ddfcd60ac1625b7482cf523f93f2d80cd7c",
+                "reference": "fca17ddfcd60ac1625b7482cf523f93f2d80cd7c",
                 "shasum": ""
             },
             "require": {
-                "crell/serde": "^1.5",
-                "php": ">=8.4",
+                "crell/serde": "^1.6",
+                "php": ">=8.5",
                 "spriebsch/filesystem": "^1.0",
                 "spriebsch/timestamp": "^1.1",
                 "spriebsch/uuid": "^2.0"
@@ -243,7 +243,8 @@
             "type": "library",
             "autoload": {
                 "classmap": [
-                    "src"
+                    "src",
+                    "tests"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -257,29 +258,28 @@
                     "homepage": "https://priebsch.de"
                 }
             ],
-            "description": "The best way to work with Domain Events",
+            "description": "Domain Events, Done Right.",
             "support": {
                 "issues": "https://github.com/spriebsch/domain-event/issues",
-                "source": "https://github.com/spriebsch/domain-event/tree/1.4.0"
+                "source": "https://github.com/spriebsch/domain-event/tree/1.5.0"
             },
-            "time": "2026-01-19T07:41:14+00:00"
+            "time": "2026-07-11T12:49:28+00:00"
         },
         {
             "name": "spriebsch/filesystem",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/filesystem.git",
-                "reference": "c94acb00d9c22a53a6f32f9a91379c903451c8f4"
+                "reference": "90c5a81b2e7dfbf4aa9405afebd6e0ea89a73180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/c94acb00d9c22a53a6f32f9a91379c903451c8f4",
-                "reference": "c94acb00d9c22a53a6f32f9a91379c903451c8f4",
+                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/90c5a81b2e7dfbf4aa9405afebd6e0ea89a73180",
+                "reference": "90c5a81b2e7dfbf4aa9405afebd6e0ea89a73180",
                 "shasum": ""
             },
             "require": {
-                "ext-sqlite3": "*",
                 "php": "^8.3"
             },
             "type": "library",
@@ -303,9 +303,9 @@
             "description": "Lightweight object-oriented API to the filesystem.",
             "support": {
                 "issues": "https://github.com/spriebsch/filesystem/issues",
-                "source": "https://github.com/spriebsch/filesystem/tree/1.0.7"
+                "source": "https://github.com/spriebsch/filesystem/tree/1.0.8"
             },
-            "time": "2025-04-10T17:27:39+00:00"
+            "time": "2026-03-12T15:36:11+00:00"
         },
         {
             "name": "spriebsch/sqlite",
@@ -441,7 +441,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-sqlite3": "*"
     },
     "platform-dev": {},

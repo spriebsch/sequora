@@ -81,6 +81,8 @@ final readonly class EventQuery
         return $correlationIds;
     }
 
+    // @todo die api zum abruf ist irgendwie künstlich hässlich und wir haben ein setter vs. getter problem. wie wäre es mit einem immutable vo mit einem hässlichen konstruktor, der von diesem objekt gebaut wird und dann nur getter hat?
+
     public function causationIdValue(): ?CausationId
     {
         /** @var CausationId|null $causationId */
@@ -138,19 +140,12 @@ final readonly class EventQuery
      */
     private function makeUnique(array $topics): array
     {
-        /** @var Topic[] $uniqueTopics */
         $uniqueTopics = [];
 
         foreach ($topics as $topic) {
-            foreach ($uniqueTopics as $uniqueTopic) {
-                if ($uniqueTopic->equals($topic)) {
-                    continue 2;
-                }
-            }
-
-            $uniqueTopics[] = $topic;
+            $uniqueTopics[$topic->asString()] = $topic;
         }
 
-        return $uniqueTopics;
+        return array_values($uniqueTopics);
     }
 }

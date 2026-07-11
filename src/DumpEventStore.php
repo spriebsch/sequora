@@ -4,7 +4,7 @@ namespace spriebsch\sequora;
 
 use spriebsch\sqlite\SqliteConnection;
 
-class DumpEventStore
+final readonly class DumpEventStore
 {
     public static function dump(SqliteConnection $connection): void
     {
@@ -15,22 +15,24 @@ class DumpEventStore
         $headers = [];
         $maxLengths = [];
 
-        if ($result) {
-            for ($i = 0; $i < $result->numColumns(); $i++) {
-                $headers[] = $result->columnName($i);
-            }
+        if ($result === false) {
+            return;
+        }
 
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+            $headers[] = $result->columnName($i);
+        }
+
+        foreach ($headers as $index => $header) {
+            $maxLengths[$index] = strlen((string) $header);
+        }
+
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            /** @var array<string, string|int|float|null> $row */
+            $rows[] = $row;
             foreach ($headers as $index => $header) {
-                $maxLengths[$index] = strlen($header);
-            }
-
-            while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-                /** @var array<string, string|int|float|null> $row */
-                $rows[] = $row;
-                foreach ($headers as $index => $header) {
-                    $value = (string) ($row[$header] ?? '');
-                    $maxLengths[$index] = max($maxLengths[$index], strlen($value));
-                }
+                $value = (string) ($row[$header] ?? '');
+                $maxLengths[$index] = max($maxLengths[$index], strlen($value));
             }
         }
 
