@@ -10,7 +10,11 @@
   },
   "autoload": {
     "classmap": [
-      "src",
+      "src"
+    ]
+  },
+  "autoload-dev": {
+    "classmap": [
       "tests"
     ]
   },
