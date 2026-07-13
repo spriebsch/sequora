@@ -53,4 +53,16 @@ final class DumpEventStoreTest extends TestCase
         $this->assertStringContainsString('event_type', $output);
         $this->assertStringContainsString('payload', $output);
     }
+
+    public function test_dump_returns_early_when_query_fails(): void
+    {
+        $connection = SqliteConnection::from($this->dbFile);
+        // Table does not exist, query will fail
+
+        ob_start();
+        DumpEventStore::dump($connection);
+        $output = (string) ob_get_clean();
+
+        $this->assertSame('', $output);
+    }
 }

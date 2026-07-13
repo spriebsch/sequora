@@ -6,9 +6,18 @@ use spriebsch\sqlite\SqliteConnection;
 
 final readonly class DumpEventStore
 {
+    /** @codeCoverageIgnore */
+    private function __construct()
+    {
+    }
+
     public static function dump(SqliteConnection $connection): void
     {
-        $statement = $connection->prepare('SELECT * FROM `sequora-events`');
+        try {
+            $statement = $connection->prepare('SELECT * FROM `sequora-events`');
+        } catch (\SQLite3Exception) {
+            return;
+        }
         $result = $statement->execute();
 
         $rows = [];
@@ -16,7 +25,9 @@ final readonly class DumpEventStore
         $maxLengths = [];
 
         if ($result === false) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         for ($i = 0; $i < $result->numColumns(); $i++) {

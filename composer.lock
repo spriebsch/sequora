@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11a261d18278c473af00461d83b26b49",
+    "content-hash": "51ed081b836b7d0935b59cf4ab14141d",
     "packages": [
         {
             "name": "crell/attributeutils",
@@ -218,16 +218,16 @@
         },
         {
             "name": "spriebsch/domain-event",
-            "version": "1.5.0",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/domain-event.git",
-                "reference": "fca17ddfcd60ac1625b7482cf523f93f2d80cd7c"
+                "reference": "c1e1151c44b32314dee99b5bb7e840a06cada4b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/fca17ddfcd60ac1625b7482cf523f93f2d80cd7c",
-                "reference": "fca17ddfcd60ac1625b7482cf523f93f2d80cd7c",
+                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/c1e1151c44b32314dee99b5bb7e840a06cada4b0",
+                "reference": "c1e1151c44b32314dee99b5bb7e840a06cada4b0",
                 "shasum": ""
             },
             "require": {
@@ -238,13 +238,12 @@
                 "spriebsch/uuid": "^2.0"
             },
             "bin": [
-                "bin/generate-topic-map.php"
+                "bin/generate-topic-map"
             ],
             "type": "library",
             "autoload": {
                 "classmap": [
-                    "src",
-                    "tests"
+                    "src"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -261,9 +260,9 @@
             "description": "Domain Events, Done Right.",
             "support": {
                 "issues": "https://github.com/spriebsch/domain-event/issues",
-                "source": "https://github.com/spriebsch/domain-event/tree/1.5.0"
+                "source": "https://github.com/spriebsch/domain-event/tree/1.7.2"
             },
-            "time": "2026-07-11T12:49:28+00:00"
+            "time": "2026-07-13T09:28:27+00:00"
         },
         {
             "name": "spriebsch/filesystem",
