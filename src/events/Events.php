@@ -59,7 +59,7 @@ final readonly class Events implements IteratorAggregate, Countable
     public function asArray(): array
     {
         return array_map(
-            fn (Envelope $envelope) => $envelope->payload()->event(),
+            fn (Envelope $envelope) => $envelope->event(),
             $this->envelopes
         );
     }

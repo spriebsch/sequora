@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51ed081b836b7d0935b59cf4ab14141d",
+    "content-hash": "9e3e4dc07446d85aff439504f96fa907",
     "packages": [
         {
             "name": "crell/attributeutils",
@@ -218,22 +218,23 @@
         },
         {
             "name": "spriebsch/domain-event",
-            "version": "1.7.2",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/domain-event.git",
-                "reference": "c1e1151c44b32314dee99b5bb7e840a06cada4b0"
+                "reference": "6ee2b1fc0609b4813fdc823d2919ca663aa4561b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/c1e1151c44b32314dee99b5bb7e840a06cada4b0",
-                "reference": "c1e1151c44b32314dee99b5bb7e840a06cada4b0",
+                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/6ee2b1fc0609b4813fdc823d2919ca663aa4561b",
+                "reference": "6ee2b1fc0609b4813fdc823d2919ca663aa4561b",
                 "shasum": ""
             },
             "require": {
                 "crell/serde": "^1.6",
                 "php": ">=8.5",
                 "spriebsch/filesystem": "^1.0",
+                "spriebsch/money": "^2.1",
                 "spriebsch/timestamp": "^1.1",
                 "spriebsch/uuid": "^2.0"
             },
@@ -260,9 +261,9 @@
             "description": "Domain Events, Done Right.",
             "support": {
                 "issues": "https://github.com/spriebsch/domain-event/issues",
-                "source": "https://github.com/spriebsch/domain-event/tree/1.7.2"
+                "source": "https://github.com/spriebsch/domain-event/tree/2.0.2"
             },
-            "time": "2026-07-13T09:28:27+00:00"
+            "time": "2026-07-14T21:22:12+00:00"
         },
         {
             "name": "spriebsch/filesystem",
@@ -305,6 +306,44 @@
                 "source": "https://github.com/spriebsch/filesystem/tree/1.0.8"
             },
             "time": "2026-03-12T15:36:11+00:00"
+        },
+        {
+            "name": "spriebsch/money",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/money.git",
+                "reference": "322138d582c2d1c0d2aaa68880f97ddaf0ebc260"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/money/zipball/322138d582c2d1c0d2aaa68880f97ddaf0ebc260",
+                "reference": "322138d582c2d1c0d2aaa68880f97ddaf0ebc260",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://www.priebsch.de"
+                }
+            ],
+            "description": "Money, modeled correctly.",
+            "support": {
+                "issues": "https://github.com/spriebsch/money/issues",
+                "source": "https://github.com/spriebsch/money/tree/2.2.0"
+            },
+            "time": "2026-07-14T20:04:56+00:00"
         },
         {
             "name": "spriebsch/sqlite",

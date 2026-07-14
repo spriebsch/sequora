@@ -67,7 +67,7 @@ final class SqliteDatabaseWriter implements DatabaseWriter
             $statement->bindValue(':topicContext', $envelope->topic()->context(), SQLITE3_TEXT);
             $statement->bindValue(':topicName', $envelope->topic()->name(), SQLITE3_TEXT);
             $statement->bindValue(':topic', $envelope->topic()->asString(), SQLITE3_TEXT);
-            $statement->bindValue(':event', $envelope->payload()->asJson(), SQLITE3_TEXT);
+            $statement->bindValue(':event', $envelope->eventJson(), SQLITE3_TEXT);
 
             $result = $statement->execute();
             $statement->reset();

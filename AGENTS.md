@@ -55,13 +55,13 @@ If errors occur, fix them.
 After each task, run
 
 ```bash
-php-devbox composer code-coverage
+php-devbox code-coverage
 ```
 
-to perform code coverage analysis with PHPUnit.
+to perform code coverage analysis with PHPUnit and write
+results to build/code-coverage.
 Fix any errors related to missing @covers or @uses annotations.
 Add missing tests to achieve 100% code coverage.
-
 
 # Coding Guidelines
 
@@ -105,6 +105,12 @@ Use the most specific assertion possible.
 Use one logical assertion per test method.
 
 Avoid test dependencies.
+
+Do not name tests starting with "it".
+Use test_ name prefix, not a #[Test] attribute.
+Do not use static assertion calls (self::), instead call the instance methods ($this->).
+
+When no expectations are configured, create stubs with $this->createStub() instead of mocks with $this->createMock().
 
 # General Rules
 
