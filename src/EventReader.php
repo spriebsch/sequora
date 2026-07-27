@@ -5,4 +5,6 @@ namespace spriebsch\sequora;
 interface EventReader
 {
     public function query(EventQuery $query): Events;
+
+    public function all(): Events;
 }
